@@ -1,0 +1,59 @@
+{
+    "github": {
+        "repos": [
+            {
+                "name": "Assignment",
+                "description": "Course assignment",
+                "language": "Jupyter Notebook"
+            },
+            {
+                "name": "Credit_Card_Fraud_Detection",
+                "description": "Detecting fraudulent credit card transactions using machine learning models and real-world transactional data.",
+                "language": "Jupyter Notebook"
+            },
+            {
+                "name": "DataScienceEcoSystem",
+                "description": "Course assignment",
+                "language": "Jupyter Notebook"
+            },
+            {
+                "name": "EW-Forge",
+                "description": "EW-Forge is a women-led sustainability platform designed to streamline e-waste collection and functional component redistribution. The platform connects households and organizations with responsible recycling services while promoting green entrepreneurship and circular economy practices.",
+                "language": "HTML"
+            },
+            {
+                "name": "PlantGuard",
+                "description": "",
+                "language": "Jupyter Notebook"
+            },
+            {
+                "name": "VOIS_AICTE_OCT2025_MajorProject_Nisha_Chowdary",
+                "description": "This analysis is significant for understanding Netflix\u2019s content evolution and audience engagement patterns. By identifying popular genres and underrepresented regions, the study offers actionable insights that can help Netflix make data-driven business decisions. ",
+                "language": "Jupyter Notebook"
+            },
+            {
+                "name": "VOIS_AICTE_OCT2025_NishaChowdary",
+                "description": "The Airbnb Data Analysis and Visualization project is a comprehensive data exploration and presentation effort. It involves data collection, preprocessing, ETL work.The project aims to provide insights and make Airbnb data more accessible and understandable.",
+                "language": "Jupyter Notebook"
+            }
+        ]
+    },
+    "leetcode": {
+        "total_solved": 133,
+        "easy": 110,
+        "medium": 23,
+        "hard": 0,
+        "ranking": 1161028
+    },
+    "codeforces": {
+        "rating": 842,
+        "max_rating": 842,
+        "rank": "newbie"
+    },
+    "codechef": {
+        "problems_solved": "1252"
+    },
+    "kaggle": {
+        "status": "Profile fetched (limited data due to anti-scraping)"
+    }
+}
