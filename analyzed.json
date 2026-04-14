@@ -1,0 +1,51 @@
+{
+    "summary": {
+        "total_problems_solved": 340,
+        "codeforces_rating": 924,
+        "activity_level": "Medium"
+    },
+    "projects": [
+        {
+            "name": "2D-Survival-Game",
+            "description": "a 2d java swing-based survival game where the player avoids dynamically spawning enemies that chase them with increasing difficulty.",
+            "skills": [
+                "Java"
+            ]
+        },
+        {
+            "name": "algorand-demo",
+            "description": "simple algorand learning project",
+            "skills": []
+        },
+        {
+            "name": "open-dev-data",
+            "description": "a taxonomy for open source cryptocurrency, blockchain, and decentralized ecosystems",
+            "skills": [
+                "Artificial Intelligence"
+            ]
+        }
+    ],
+    "languages": {
+        "scores": {
+            "Java": 26,
+            "Python": 16,
+            "C++": 16
+        },
+        "strongest": "Java"
+    },
+    "skills": {
+        "programming": [
+            "Java",
+            "Python",
+            "C++"
+        ],
+        "core_cs": [
+            "Algorithms",
+            "DSA"
+        ],
+        "domain": [
+            "Artificial Intelligence"
+        ]
+    },
+    "final_score": 65
+}

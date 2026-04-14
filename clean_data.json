@@ -1,0 +1,33 @@
+{
+    "github": {
+        "repos": [
+            {
+                "name": "2D-Survival-Game",
+                "description": "A 2D Java Swing-based survival game where the player avoids dynamically spawning enemies that chase them with increasing difficulty.",
+                "language": "Java"
+            },
+            {
+                "name": "algorand-demo",
+                "description": "Simple Algorand learning project",
+                "language": null
+            },
+            {
+                "name": "open-dev-data",
+                "description": "A taxonomy for open source cryptocurrency, blockchain, and decentralized ecosystems",
+                "language": null
+            }
+        ]
+    },
+    "leetcode": {
+        "total_solved": 340,
+        "easy": 128,
+        "medium": 41,
+        "hard": 1
+    },
+    "codeforces": {
+        "rating": 924,
+        "max_rating": 924,
+        "rank": "newbie"
+    },
+    "codechef": {}
+}
