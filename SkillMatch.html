@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>SkillMatch — Career Intelligence Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Caveat:wght@700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#07080f;--bg2:#0d0e1a;--bg3:#13141f;--card:#181926;--card2:#1e1f2e;
+  --border:rgba(255,255,255,.06);--border2:rgba(255,255,255,.11);--border3:rgba(255,255,255,.18);
+  --text:#eeeef5;--muted:#7878a0;--muted2:#9898b8;
+  --p:#818cf8;--p2:#a5b4fc;--t:#2dd4bf;--o:#fb923c;--r:#f87171;--g:#4ade80;--y:#facc15;--pk:#e879f9;
+  --font:'Outfit',sans-serif;--r-sm:10px;--r-md:14px;--r-lg:20px;--r-xl:28px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;overflow-x:hidden}
+body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.03;pointer-events:none;z-index:999}
+.amb{position:fixed;pointer-events:none;z-index:0;border-radius:50%;filter:blur(80px);opacity:.1}
+.amb1{width:600px;height:600px;top:-200px;left:-100px;background:var(--p)}
+.amb2{width:500px;height:500px;bottom:-100px;right:-100px;background:var(--t)}
+.amb3{width:400px;height:400px;top:40%;left:50%;transform:translate(-50%,-50%);background:var(--pk);opacity:.05}
+.wrap{max-width:1080px;margin:0 auto;padding:0 1.5rem;position:relative;z-index:1}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:rgba(7,8,15,.9);backdrop-filter:blur(20px);z-index:100}
+.logo{font-size:1.35rem;font-weight:800;letter-spacing:-.03em}.logo em{color:var(--p2);font-style:normal}
+.nav-right{display:flex;align-items:center;gap:.75rem}
+.step-dots{display:flex;gap:.4rem}
+.step-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);transition:all .3s}
+.step-dot.active{background:var(--p);width:22px;border-radius:4px}
+.step-dot.done{background:var(--t)}
+.version{font-size:.72rem;color:var(--muted);background:var(--card);border:1px solid var(--border2);padding:.2rem .6rem;border-radius:100px}
+.step{display:none;animation:fadeUp .4s ease}.step.show{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
+
+/* ── HERO ── */
+.hero{padding:4rem 0 2rem;text-align:center}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.5rem;background:rgba(129,140,248,.1);border:1px solid rgba(129,140,248,.2);color:var(--p2);font-size:.78rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:.3rem .9rem;border-radius:100px;margin-bottom:1.5rem}
+.pulse{width:6px;height:6px;border-radius:50%;background:var(--p2);animation:pulse 1.8s infinite}
+.hero h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:800;line-height:1.08;letter-spacing:-.04em;margin-bottom:1rem}
+.grad1{background:linear-gradient(135deg,#a5b4fc 0%,#818cf8 40%,#2dd4bf 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:1.05rem;color:var(--muted2);max-width:540px;margin:0 auto;line-height:1.75}
+
+/* ── STEP 1 ── */
+#step1{padding:2.5rem 0 4rem}
+.platform-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:1rem;margin-bottom:2.5rem}
+.plat-card{background:var(--card);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:1.25rem;cursor:pointer;transition:all .2s;position:relative;text-align:center;user-select:none}
+.plat-card:hover{border-color:var(--border3);transform:translateY(-2px)}
+.plat-card.selected{border-color:var(--p);background:rgba(129,140,248,.07)}
+.plat-card.selected::after{content:'✓';position:absolute;top:.5rem;right:.6rem;background:var(--p);color:#fff;font-size:.65rem;font-weight:700;width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:17px}
+.plat-icon{font-size:2rem;margin-bottom:.6rem;display:block}
+.plat-name{font-size:.88rem;font-weight:600;margin-bottom:.2rem}
+.plat-desc{font-size:.7rem;color:var(--muted)}
+.plat-api-badge{display:inline-block;font-size:.6rem;padding:.12rem .4rem;border-radius:4px;margin-top:.4rem;font-weight:600}
+.badge-live{background:rgba(74,222,128,.1);color:var(--g);border:1px solid rgba(74,222,128,.2)}
+.badge-manual{background:rgba(250,204,21,.08);color:var(--y);border:1px solid rgba(250,204,21,.15)}
+
+/* ── BUTTONS ── */
+.btn-primary{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--p),#6366f1);border:none;border-radius:var(--r-md);color:#fff;font-family:var(--font);font-size:1rem;font-weight:600;padding:.875rem 2rem;cursor:pointer;transition:all .2s}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 8px 25px rgba(129,140,248,.3)}
+.btn-primary:disabled{opacity:.4;cursor:not-allowed;transform:none;box-shadow:none}
+.btn-row{display:flex;gap:.75rem;align-items:center;justify-content:center;flex-wrap:wrap}
+.back-btn{display:inline-flex;align-items:center;gap:.35rem;background:none;border:none;color:var(--muted);cursor:pointer;font-family:var(--font);font-size:.85rem;padding:0;margin-bottom:1.5rem;transition:color .2s}
+.back-btn:hover{color:var(--text)}
+.sec-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--p);margin-bottom:1.25rem}
+
+/* ── STEP 2 ── */
+#step2{padding:2.5rem 0 4rem}
+.username-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:2.5rem;max-width:720px;margin:0 auto}
+.username-card h2{font-size:1.5rem;font-weight:700;margin-bottom:.4rem}
+.username-card>p{color:var(--muted2);margin-bottom:2rem;font-size:.95rem}
+.input-group{display:flex;align-items:center;gap:.75rem;background:var(--bg3);border:1.5px solid var(--border2);border-radius:var(--r-md);padding:.6rem 1rem;margin-bottom:.75rem;transition:border-color .2s}
+.input-group:focus-within{border-color:var(--p)}
+.input-icon{font-size:1.2rem;flex-shrink:0;width:28px;text-align:center}
+.input-group-inner{flex:1}
+.input-label{font-size:.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.12rem;display:flex;align-items:center;gap:.4rem}
+.input-group input{width:100%;background:none;border:none;color:var(--text);font-family:var(--font);font-size:.95rem;outline:none}
+.input-group input::placeholder{color:var(--muted)}
+.manual-section{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+.manual-plat-block{margin-bottom:1.25rem}
+.manual-plat-title{font-size:.82rem;color:var(--muted2);font-weight:600;margin-bottom:.6rem}
+.manual-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.mini-input{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r-sm);padding:.45rem .7rem;transition:border-color .2s}
+.mini-input:focus-within{border-color:var(--p)}
+.mini-label{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.1rem}
+.mini-input input{width:100%;background:none;border:none;color:var(--text);font-family:var(--font);font-size:.88rem;outline:none}
+.err{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.2);color:var(--r);border-radius:var(--r-sm);padding:.75rem 1rem;font-size:.85rem;display:none;margin-top:.75rem}
+
+/* ── STEP 3 LOADING ── */
+#step3{padding:3rem 0;text-align:center}
+.loading-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-xl);padding:3rem 2rem;max-width:560px;margin:0 auto}
+.loading-logo{font-size:3rem;margin-bottom:1.5rem;animation:spin 2s linear infinite;display:inline-block}
+.loading-title{font-size:1.3rem;font-weight:700;margin-bottom:.4rem}
+.loading-sub{color:var(--muted2);font-size:.9rem;margin-bottom:2rem}
+.progress-list{text-align:left;margin-top:1.5rem}
+.progress-item{display:flex;align-items:center;gap:.75rem;padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.9rem}
+.progress-item:last-child{border-bottom:none}
+.p-status{width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.7rem}
+.p-status.pending{background:var(--bg3);border:1.5px solid var(--border2)}
+.p-status.loading{border:2px solid var(--p);border-top-color:transparent;animation:spin .7s linear infinite}
+.p-status.done{background:rgba(74,222,128,.15);color:var(--g)}
+.p-status.error{background:rgba(248,113,113,.1);color:var(--r)}
+.p-name{flex:1;font-weight:500}
+.p-detail{font-size:.78rem;color:var(--muted);min-width:140px;text-align:right}
+
+/* ── STEP 4 RESULTS ── */
+#step4{padding:2rem 0 5rem}
+.profile-hero{background:linear-gradient(135deg,rgba(129,140,248,.08),rgba(45,212,191,.06));border:1px solid var(--border2);border-radius:var(--r-xl);padding:2.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap}
+.avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--t));display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:800;flex-shrink:0;color:#fff}
+.profile-info h2{font-size:1.6rem;font-weight:800;margin-bottom:.25rem}
+.profile-info p{color:var(--muted2);font-size:.88rem;line-height:1.6}
+.role-tag{display:inline-flex;align-items:center;gap:.4rem;background:rgba(129,140,248,.15);border:1px solid rgba(129,140,248,.3);color:var(--p2);font-size:.8rem;font-weight:600;padding:.3rem .9rem;border-radius:100px;margin-top:.5rem}
+.profile-score{margin-left:auto;text-align:center}
+.score-big{font-size:3.5rem;font-weight:800;background:linear-gradient(135deg,var(--p2),var(--t));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.score-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;margin-top:.25rem}
+.results-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem}
+.r-card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.5rem}
+.r-card-title{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:1.25rem;display:flex;align-items:center;gap:.4rem}
+.r-card-title::before{content:'';width:3px;height:12px;background:var(--p);border-radius:2px}
+
+/* ── PLATFORM STATS ── */
+.plat-stat-block{padding:.75rem 0;border-bottom:1px solid var(--border)}
+.plat-stat-block:last-child{border-bottom:none}
+.plat-stat-header{display:flex;align-items:center;gap:.6rem;margin-bottom:.5rem}
+.plat-stat-icon{font-size:1.1rem;width:26px;text-align:center}
+.plat-stat-name{font-size:.88rem;font-weight:700;flex:1}
+.plat-stat-level{font-size:.68rem;padding:.1rem .45rem;border-radius:4px;font-weight:600}
+.level-high{background:rgba(74,222,128,.1);color:var(--g);border:1px solid rgba(74,222,128,.2)}
+.level-med{background:rgba(250,204,21,.08);color:var(--y);border:1px solid rgba(250,204,21,.15)}
+.level-low{background:rgba(248,113,113,.07);color:var(--r);border:1px solid rgba(248,113,113,.12)}
+.plat-stat-pills{display:flex;gap:.4rem;flex-wrap:wrap}
+.stat-pill{font-size:.73rem;padding:.18rem .55rem;border-radius:6px;background:var(--bg3);border:1px solid var(--border2);color:var(--muted2)}
+.stat-pill.hi{background:rgba(74,222,128,.08);color:var(--g);border-color:rgba(74,222,128,.2)}
+.stat-pill.med{background:rgba(250,204,21,.06);color:var(--y);border-color:rgba(250,204,21,.15)}
+.stat-pill.info{background:rgba(129,140,248,.08);color:var(--p2);border-color:rgba(129,140,248,.2)}
+
+/* ── LANG BARS ── */
+.lang-row{margin-bottom:.8rem}
+.lang-header{display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:.28rem}
+.lang-pct{color:var(--muted);font-size:.76rem}
+.bar-track{height:5px;background:rgba(255,255,255,.05);border-radius:100px;overflow:hidden}
+.bar-fill{height:100%;border-radius:100px;transition:width 1.4s cubic-bezier(.4,0,.2,1);width:0}
+.chart-wrap{position:relative;height:180px;width:100%;margin-top:.75rem}
+
+/* ── PER-PLATFORM LANG BREAKDOWN ── */
+.lang-platform-section{margin-top:1.1rem;border-top:1px solid var(--border);padding-top:1rem}
+.lang-platform-header{display:flex;align-items:center;gap:.4rem;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin-bottom:.65rem}
+.lang-platform-icon{font-size:.95rem}
+.lang-mini-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem}
+.lang-mini-name{font-size:.78rem;font-weight:600;flex:0 0 80px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lang-mini-bar{flex:1;height:4px;background:rgba(255,255,255,.05);border-radius:100px;overflow:hidden}
+.lang-mini-fill{height:100%;border-radius:100px;transition:width 1.4s cubic-bezier(.4,0,.2,1);width:0}
+.lang-mini-meta{font-size:.7rem;color:var(--muted);flex:0 0 90px;text-align:right;white-space:nowrap}
+.lang-count-badge{display:inline-block;font-size:.6rem;padding:.08rem .35rem;border-radius:4px;background:var(--bg3);border:1px solid var(--border2);margin-left:.25rem;color:var(--muted2)}
+
+/* ── PROJECTS ── */
+.project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:.85rem}
+.proj-item{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-md);padding:1rem 1.1rem;transition:border-color .2s}
+.proj-item:hover{border-color:var(--border2)}
+.proj-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;margin-bottom:.3rem}
+.proj-name{font-size:.88rem;font-weight:700}
+.proj-lang{font-size:.7rem;padding:.12rem .45rem;border-radius:5px;background:rgba(129,140,248,.1);color:var(--p2);border:1px solid rgba(129,140,248,.2);white-space:nowrap}
+.proj-desc{font-size:.77rem;color:var(--muted);line-height:1.55;margin-bottom:.5rem}
+.proj-tags{display:flex;gap:.35rem;flex-wrap:wrap}
+.proj-tag{font-size:.68rem;padding:.1rem .42rem;border-radius:4px;background:var(--card2);color:var(--muted2)}
+.proj-domain{font-size:.68rem;padding:.1rem .42rem;border-radius:4px;background:rgba(45,212,191,.08);color:var(--t);border:1px solid rgba(45,212,191,.18)}
+
+/* ── CONTEST ── */
+.contest-table{width:100%;border-collapse:collapse;font-size:.82rem}
+.contest-table th{text-align:left;color:var(--muted);font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;padding:.4rem .5rem;border-bottom:1px solid var(--border)}
+.contest-table td{padding:.5rem .5rem;border-bottom:1px solid var(--border);color:var(--muted2)}
+.contest-table td:first-child{color:var(--text);font-weight:500}
+.rating-up{color:var(--g);font-weight:600}
+.rating-down{color:var(--r);font-weight:600}
+.rating-badge{display:inline-block;padding:.2rem .6rem;border-radius:6px;font-size:.8rem;font-weight:700}
+
+/* ── CALENDAR ── */
+.cal-grid{display:flex;gap:2px;flex-wrap:wrap}
+.cal-day{width:10px;height:10px;border-radius:2px;background:var(--bg3);border:1px solid var(--border);cursor:default;transition:transform .1s}
+.cal-day:hover{transform:scale(1.4)}
+.cal-day.l1{background:rgba(129,140,248,.18);border-color:rgba(129,140,248,.1)}
+.cal-day.l2{background:rgba(129,140,248,.38);border-color:rgba(129,140,248,.2)}
+.cal-day.l3{background:rgba(129,140,248,.62);border-color:rgba(129,140,248,.3)}
+.cal-day.l4{background:var(--p2);border-color:var(--p)}
+
+/* ── CERTS ── */
+.cert-item{display:flex;align-items:center;gap:.75rem;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-sm);padding:.7rem 1rem;margin-bottom:.5rem}
+.cert-icon{font-size:1.1rem;flex-shrink:0}
+.cert-name{font-size:.84rem;font-weight:600;flex:1}
+.cert-issuer{font-size:.7rem;color:var(--muted)}
+.cert-valid{font-size:.68rem;padding:.12rem .4rem;border-radius:5px;background:rgba(74,222,128,.08);color:var(--g);border:1px solid rgba(74,222,128,.18);white-space:nowrap}
+
+/* ── SKILL PILLS ── */
+.pill-row{display:flex;flex-wrap:wrap;gap:.4rem}
+.pill{font-size:.78rem;padding:.25rem .7rem;border-radius:7px}
+.pill.have{background:rgba(45,212,191,.1);color:var(--t);border:1px solid rgba(45,212,191,.2)}
+.pill.need{background:rgba(248,113,113,.08);color:var(--r);border:1px solid rgba(248,113,113,.18)}
+.pill.learn{background:rgba(251,146,60,.08);color:var(--o);border:1px solid rgba(251,146,60,.15)}
+
+/* ── JOB CARDS ── */
+.job-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1rem}
+.job-card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r-md);padding:1.2rem;transition:border-color .2s,transform .2s;display:flex;flex-direction:column;gap:.45rem}
+.job-card:hover{border-color:var(--p);transform:translateY(-2px)}
+.job-top{display:flex;align-items:flex-start;gap:.7rem}
+.company-logo{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,var(--p),var(--pk));display:flex;align-items:center;justify-content:center;font-size:.95rem;flex-shrink:0}
+.job-title{font-size:.88rem;font-weight:700;line-height:1.3}
+.job-company{font-size:.75rem;color:var(--muted)}
+.job-match{font-size:.7rem;font-weight:700;padding:.18rem .5rem;border-radius:6px}
+.match-high{background:rgba(74,222,128,.1);color:var(--g);border:1px solid rgba(74,222,128,.2)}
+.match-med{background:rgba(250,204,21,.08);color:var(--y);border:1px solid rgba(250,204,21,.15)}
+.match-low{background:rgba(248,113,113,.08);color:var(--r);border:1px solid rgba(248,113,113,.15)}
+.job-skills{display:flex;flex-wrap:wrap;gap:.3rem}
+.job-skill{font-size:.68rem;padding:.12rem .4rem;border-radius:4px;background:var(--card2);color:var(--muted2)}
+.job-skill.missing{background:rgba(251,146,60,.08);color:var(--o);border:1px solid rgba(251,146,60,.15)}
+.apply-btn{display:inline-flex;align-items:center;gap:.3rem;margin-top:auto;background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--muted2);font-family:var(--font);font-size:.76rem;font-weight:500;padding:.38rem .8rem;cursor:pointer;text-decoration:none;transition:all .2s}
+.apply-btn:hover{border-color:var(--p);color:var(--p2)}
+
+/* ── AI BOX ── */
+.ai-box{background:linear-gradient(135deg,rgba(129,140,248,.06),rgba(45,212,191,.04));border:1px solid rgba(129,140,248,.2);border-radius:var(--r-lg);padding:1.75rem;position:relative;overflow:hidden}
+.ai-box::before{content:'AI';position:absolute;right:1.5rem;top:1rem;font-size:5rem;font-weight:900;opacity:.04;color:var(--p);font-family:'Caveat',cursive}
+.ai-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--p2);margin-bottom:.75rem;display:flex;align-items:center;gap:.4rem}
+.ai-label::before{content:'✦';font-size:.8rem}
+.ai-text{font-size:.9rem;color:var(--muted2);line-height:1.8;white-space:pre-wrap}
+.ai-typing::after{content:'▊';animation:blink .7s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.empty{color:var(--muted);font-size:.85rem;font-style:italic}
+
+@media(max-width:680px){
+  .results-grid{grid-template-columns:1fr}
+  .profile-hero{flex-direction:column;align-items:flex-start}
+  .profile-score{margin-left:0}
+  .platform-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}
+  .manual-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="amb amb1"></div><div class="amb amb2"></div><div class="amb amb3"></div>
+
+<nav>
+  <div class="logo">Skill<em>Match</em></div>
+  <div class="nav-right">
+    <div style="display:flex;align-items:center;gap:.35rem;font-size:.7rem;color:var(--g);font-weight:600">
+      <span style="width:6px;height:6px;border-radius:50%;background:var(--g);animation:pulse 1.8s infinite;display:inline-block"></span>
+      Live
+    </div>
+    <div class="step-dots">
+      <div class="step-dot active" id="dot0"></div>
+      <div class="step-dot" id="dot1"></div>
+      <div class="step-dot" id="dot2"></div>
+      <div class="step-dot" id="dot3"></div>
+    </div>
+    <div class="version">v5.0 · BVRIT</div>
+  </div>
+</nav>
+
+<!-- STEP 1 -->
+<div class="step show" id="step1">
+  <div class="wrap">
+    <div class="hero">
+      <div class="hero-eyebrow"><span class="pulse"></span>Performance-Based Placement Intelligence</div>
+      <h1>Which platforms are<br/><span class="grad1">you active on?</span></h1>
+      <p>Select every platform you use. We fetch your real data and build a complete career readiness report.</p>
+    </div>
+    <div class="sec-title">Select Your Platforms</div>
+    <div class="platform-grid" id="platform-grid"></div>
+    <div class="btn-row">
+      <button class="btn-primary" id="btn-continue1" onclick="goStep2()" disabled>Continue with Selected →</button>
+    </div>
+    <p style="text-align:center;color:var(--muted);font-size:.78rem;margin-top:.6rem">Select at least 1 platform</p>
+  </div>
+</div>
+
+<!-- STEP 2 -->
+<div class="step" id="step2">
+  <div class="wrap">
+    <button class="back-btn" onclick="goStep(1)">← Back</button>
+    <div class="username-card">
+      <h2>Enter your usernames</h2>
+      <p>Live API platforms fetch data automatically. For others, fill in your stats below.</p>
+      <div id="username-inputs"></div>
+      <div id="manual-stats-section"></div>
+      <div class="err" id="err2">Please enter at least one username to continue.</div>
+      <div style="margin-top:1.5rem" class="btn-row">
+        <button class="btn-primary" onclick="goStep3()">Analyze My Profile →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 3 -->
+<div class="step" id="step3">
+  <div class="wrap">
+    <div class="loading-card">
+      <div class="loading-logo">⚡</div>
+      <div class="loading-title">Collecting your data…</div>
+      <div class="loading-sub">Fetching from platforms and running AI analysis</div>
+      <div class="progress-list" id="progress-list"></div>
+    </div>
+  </div>
+</div>
+
+<!-- STEP 4 -->
+<div class="step" id="step4">
+  <div class="wrap">
+    <button class="back-btn" onclick="goStep(1)">← Start Over</button>
+
+    <div class="profile-hero">
+      <div class="avatar" id="res-avatar">?</div>
+      <div class="profile-info">
+        <h2 id="res-name">—</h2>
+        <p id="res-handle">—</p>
+        <div class="role-tag" id="res-role">⚡ —</div>
+        <div style="margin-top:.5rem;font-size:.7rem;color:var(--muted)" id="res-timestamp"></div>
+      </div>
+      <div class="profile-score">
+        <div class="score-big" id="res-score">—</div>
+        <div class="score-label">Skill Match Score</div>
+      </div>
+    </div>
+
+    <div class="results-grid">
+      <div class="r-card">
+        <div class="r-card-title">Platform Stats</div>
+        <div id="plat-stats-list"></div>
+      </div>
+      <div class="r-card">
+        <div class="r-card-title">Language Distribution</div>
+        <div id="lang-bars"></div>
+        <div class="chart-wrap"><canvas id="langChart" role="img" aria-label="Language distribution doughnut chart">Language chart.</canvas></div>
+        <div id="lang-platform-breakdown"></div>
+      </div>
+    </div>
+
+    <div class="results-grid">
+      <div class="r-card">
+        <div class="r-card-title">Contest History & Ratings</div>
+        <div id="contest-section"></div>
+      </div>
+      <div class="r-card">
+        <div class="r-card-title">Coding Activity (Last 52 Weeks)</div>
+        <div class="cal-grid" id="activity-cal"></div>
+        <div style="display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.75rem" id="activity-stats"></div>
+      </div>
+    </div>
+
+    <div class="r-card" style="margin-bottom:1.25rem">
+      <div class="r-card-title">GitHub Projects & Domains</div>
+      <div id="github-projects"></div>
+    </div>
+
+    <div class="r-card" style="margin-bottom:1.25rem">
+      <div class="r-card-title">Certifications Detected</div>
+      <div id="cert-list"></div>
+    </div>
+
+    <div class="results-grid">
+      <div class="r-card">
+        <div class="r-card-title">Skills You Have</div>
+        <div id="skills-have" class="pill-row"></div>
+      </div>
+      <div class="r-card">
+        <div class="r-card-title">Skills to Acquire</div>
+        <div id="skills-need" class="pill-row"></div>
+      </div>
+    </div>
+
+    <div class="r-card" style="margin-bottom:1.25rem">
+      <div class="r-card-title">Matching Job Openings</div>
+      <div class="job-grid" id="job-grid"></div>
+    </div>
+
+    <div class="ai-box">
+      <div class="ai-label">AI Career Analysis</div>
+      <div class="ai-text ai-typing" id="ai-analysis">Generating your personalized career roadmap…</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+/* ═══════════════════════════════
+   CONSTANTS
+═══════════════════════════════ */
+const PLATFORMS = [
+  {id:'github',      name:'GitHub',        icon:'🐙', api:'live',   ph:'e.g. anchowdary-04'},
+  {id:'leetcode',    name:'LeetCode',      icon:'💡', api:'live',   ph:'e.g. Anchowdary_04'},
+  {id:'codeforces',  name:'Codeforces',    icon:'⚡', api:'live',   ph:'e.g. anchowdary_04'},
+  {id:'codechef',    name:'CodeChef',      icon:'👨‍🍳',api:'live',   ph:'e.g. bvr24wh1a0510'},
+  {id:'hackerrank',  name:'HackerRank',    icon:'🟢', api:'live',   ph:'e.g. nishaabburi'},
+  {id:'kaggle',      name:'Kaggle',        icon:'🏅', api:'live',   ph:'e.g. anchowdary04'},
+  {id:'gfg',         name:'GeeksforGeeks', icon:'🧠', api:'live',   ph:'e.g. nishachowdary'},
+  {id:'interviewbit',name:'InterviewBit',  icon:'🎯', api:'manual', ph:'e.g. nisha_chowdary'},
+  {id:'linkedin',    name:'LinkedIn',      icon:'💼', api:'live',   ph:'linkedin.com/in/username'},
+  {id:'codingninjas',name:'Coding Ninjas', icon:'🥷', api:'manual', ph:'e.g. nisha123'},
+];
+
+/* ── Language normalisation map ─────────────────────
+   Jupyter Notebook, ipynb → Python
+   Python3 → Python, etc. */
+const LANG_NORM = {
+  'Jupyter Notebook':'Python','jupyter notebook':'Python',
+  'Python3':'Python','python3':'Python',
+  'C++17':'C++','C++14':'C++','C++11':'C++',
+  'GNU C++17':'C++','GNU C++14':'C++','GNU C++11':'C++','GNU C++':'C++',
+  'C# ':'C#','JavaScript':'JavaScript','TypeScript':'TypeScript',
+};
+function normLang(l){
+  if(!l||l==='null'||l==='None') return null;
+  return LANG_NORM[l] || l;
+}
+
+/* ── Domain detection from project name + description ──────────────
+   Returns array of domain strings */
+function detectDomains(name, desc, topics=[]) {
+  const txt = (name+' '+(desc||'')+(topics||[]).join(' ')).toLowerCase();
+  const domains = [];
+  // Machine Learning / AI
+  if(/machine.learn|fraud.detect|credit.card|loan.pred|sentiment|spam|classif|neural|deep.learn|tensorflow|pytorch|scikit|model|predict|nlp|computer.vision|image.classif|object.detect|face.recog|cancer|disease|diagnos|recommendation|chatbot|llm|transformer|bert|yolo/.test(txt)) domains.push('Machine Learning');
+  // Data Science
+  if(/data.sci|data.analy|data.visual|eda|exploratory|pandas|numpy|matplotlib|seaborn|tableau|power.bi|dashboard|insight|statistics|airbnb|netflix|covid|dataset|survey/.test(txt)) domains.push('Data Science');
+  // Web Development
+  if(/web|html|css|react|angular|vue|node|express|django|flask|fastapi|frontend|backend|fullstack|rest.api|graphql|e.commerce|blog|portfolio|landing/.test(txt)) domains.push('Web Development');
+  // Mobile
+  if(/android|ios|flutter|react.native|mobile|swift|kotlin|xamarin/.test(txt)) domains.push('Mobile Dev');
+  // Cybersecurity
+  if(/security|ctf|hack|pentest|vuln|exploit|cipher|encrypt|forensic|malware|intrusion/.test(txt)) domains.push('Cybersecurity');
+  // Cloud / DevOps
+  if(/aws|azure|gcp|cloud|docker|kubernetes|k8s|devops|ci.cd|terraform|ansible|jenkins/.test(txt)) domains.push('Cloud & DevOps');
+  // Blockchain
+  if(/blockchain|web3|smart.contract|solidity|defi|nft|ethereum|crypto/.test(txt)) domains.push('Blockchain');
+  // Competitive / DSA
+  if(/competitive|algorithm|dsa|data.struct|cp|leetcode|codeforce|dynamic.program/.test(txt)) domains.push('Competitive Programming');
+  // Sustainability / IoT
+  if(/sustainability|e.waste|recycl|green|iot|smart|embedded|arduino|raspberry/.test(txt)) domains.push('IoT / Sustainability');
+  return [...new Set(domains)];
+}
+
+/* ── Real job search URLs ── */
+function jobSearchURL(title, location='India') {
+  const q = encodeURIComponent(title);
+  const l = encodeURIComponent(location);
+  return `https://www.linkedin.com/jobs/search/?keywords=${q}&location=${l}&f_TPR=r2592000&sortBy=R`;
+}
+function indeedURL(title) {
+  return `https://in.indeed.com/jobs?q=${encodeURIComponent(title)}&l=India&sort=date`;
+}
+function naukriURL(title) {
+  const slug = title.toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'');
+  return `https://www.naukri.com/${slug}-jobs`;
+}
+
+/* ═══════════════════════════════
+   STATE
+═══════════════════════════════ */
+let selected = new Set();
+let usernames = {};
+let collectedData = {};
+let aiResult = null;
+let langChartInst = null;
+
+/* ═══════════════════════════════
+   STEP 1 – RENDER PLATFORMS
+═══════════════════════════════ */
+function renderPlatformGrid() {
+  document.getElementById('platform-grid').innerHTML = PLATFORMS.map(p=>`
+    <div class="plat-card" id="plat-${p.id}" onclick="togglePlatform('${p.id}')">
+      <span class="plat-icon">${p.icon}</span>
+      <div class="plat-name">${p.name}</div>
+      <div class="plat-api-badge ${p.api==='live'?'badge-live':'badge-manual'}">${p.api==='live'?'Live API':'Manual Stats'}</div>
+    </div>`).join('');
+}
+function togglePlatform(id) {
+  selected.has(id) ? selected.delete(id) : selected.add(id);
+  document.getElementById('plat-'+id).classList.toggle('selected', selected.has(id));
+  document.getElementById('btn-continue1').disabled = selected.size===0;
+}
+
+/* ═══════════════════════════════
+   STEP NAVIGATION
+═══════════════════════════════ */
+function goStep(n) {
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('show'));
+  document.getElementById('step'+n).classList.add('show');
+  document.querySelectorAll('.step-dot').forEach((d,i)=>{
+    d.classList.remove('active','done');
+    if(i===n-1) d.classList.add('active');
+    else if(i<n-1) d.classList.add('done');
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function goStep2() {
+  if(!selected.size) return;
+  const manualPids = [...selected].filter(id=>PLATFORMS.find(p=>p.id===id)?.api==='manual');
+
+  // Username inputs for all platforms
+  let html = '';
+  for(const pid of selected) {
+    const p = PLATFORMS.find(x=>x.id===pid);
+    const badge = p.api==='live'
+      ? '<span style="color:var(--g);font-size:.65rem">● Live API</span>'
+      : '<span style="color:var(--y);font-size:.65rem">● Manual</span>';
+    html += `<div class="input-group">
+      <div class="input-icon">${p.icon}</div>
+      <div class="input-group-inner">
+        <div class="input-label">${p.name} ${badge}</div>
+        <input id="un-${pid}" type="text" placeholder="${p.ph}" autocomplete="off"/>
+      </div></div>`;
+  }
+  document.getElementById('username-inputs').innerHTML = html;
+
+  // Extra fields section
+  let extra = '';
+
+  // LinkedIn extra fields
+  if(selected.has('linkedin')) {
+    extra += `<div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border)">
+      <div class="sec-title">💼 LinkedIn Profile Data</div>
+      <p style="font-size:.8rem;color:var(--muted2);margin-bottom:1rem">LinkedIn has no public API and blocks scraping. Enter your data below for accurate AI matching.</p>
+      <div class="input-group" style="margin-bottom:.75rem">
+        <div class="input-icon">🏷️</div>
+        <div class="input-group-inner">
+          <div class="input-label">Headline / Current Role</div>
+          <input id="li-headline" type="text" placeholder="e.g. B.Tech CSE Student at BVRIT | ML Enthusiast"/>
+        </div>
+      </div>
+      <div class="input-group" style="margin-bottom:.75rem">
+        <div class="input-icon">💼</div>
+        <div class="input-group-inner">
+          <div class="input-label">Experience (internships, roles)</div>
+          <input id="li-experience" type="text" placeholder="e.g. Data Science Intern at Vodafone VOIS (2025)"/>
+        </div>
+      </div>
+      <div class="mini-input" style="margin-bottom:.6rem">
+        <div class="mini-label">Certifications (one per line — from Licenses &amp; Certifications section)</div>
+        <textarea id="li-certs" rows="5" style="width:100%;background:none;border:none;color:var(--text);font-family:var(--font);font-size:.85rem;outline:none;resize:vertical;line-height:1.6" placeholder="VOIS × AICTE Data Science Programme&#10;AWS Cloud Practitioner&#10;Google Data Analytics (Coursera)&#10;NPTEL Programming in Python&#10;HackerRank Python Certificate"></textarea>
+      </div>
+      <div class="mini-input" style="margin-bottom:.6rem">
+        <div class="mini-label">Skills on LinkedIn (comma-separated)</div>
+        <input id="li-skills" type="text" placeholder="e.g. Python, Machine Learning, SQL, Data Visualization, Git, Pandas"/>
+      </div>
+      <div class="mini-input">
+        <div class="mini-label">Recent Post or About section (optional — gives AI more context)</div>
+        <textarea id="li-posts" rows="3" style="width:100%;background:none;border:none;color:var(--text);font-family:var(--font);font-size:.85rem;outline:none;resize:vertical" placeholder="Paste your LinkedIn About or a recent post here for richer AI analysis…"></textarea>
+      </div>
+    </div>`;
+  }
+
+  // Manual stat fields for non-API platforms
+  if(manualPids.length) {
+    extra += `<div class="manual-section"><div class="sec-title">Manual Stats</div>`;
+    for(const pid of manualPids) {
+      const p = PLATFORMS.find(x=>x.id===pid);
+      extra += `<div class="manual-plat-block">
+        <div class="manual-plat-title">${p.icon} ${p.name} — enter your stats</div>
+        <div class="manual-grid">
+          <div class="mini-input"><div class="mini-label">Problems Solved</div><input id="m-${pid}-problems" type="number" placeholder="e.g. 200" min="0"/></div>
+          <div class="mini-input"><div class="mini-label">Highest Rating</div><input id="m-${pid}-rating" type="number" placeholder="e.g. 1500" min="0"/></div>
+          <div class="mini-input"><div class="mini-label">Contests Attended</div><input id="m-${pid}-contests" type="number" placeholder="e.g. 12" min="0"/></div>
+          <div class="mini-input"><div class="mini-label">Badges / Stars</div><input id="m-${pid}-badges" type="text" placeholder="e.g. 5-Star, Gold"/></div>
+          <div class="mini-input" style="grid-column:1/-1"><div class="mini-label">Primary Language Used</div><input id="m-${pid}-lang" type="text" placeholder="e.g. Python, C++"/></div>
+        </div></div>`;
+    }
+    extra += `</div>`;
+  }
+
+  document.getElementById('manual-stats-section').innerHTML = extra;
+  goStep(2);
+}
+
+/* ═══════════════════════════════
+   STEP 3 – FETCH
+═══════════════════════════════ */
+async function goStep3() {
+  usernames = {};
+  for(const pid of selected) {
+    const el = document.getElementById('un-'+pid);
+    if(el?.value?.trim()) usernames[pid] = el.value.trim();
+  }
+  if(!Object.keys(usernames).length) { document.getElementById('err2').style.display='block'; return; }
+  goStep(3);
+  await fetchAllData();
+  renderResults();
+  goStep(4);
+}
+
+function setProgress(pid, status, detail='') {
+  const item = document.getElementById('prog-'+pid);
+  if(!item) return;
+  item.querySelector('.p-status').className = 'p-status '+status;
+  item.querySelector('.p-status').textContent = status==='done'?'✓':status==='error'?'✗':'';
+  if(detail) item.querySelector('.p-detail').textContent = detail;
+}
+
+async function fetchAllData() {
+  // Build progress list
+  const list = document.getElementById('progress-list');
+  let items = [...selected].map(pid=>{
+    const p = PLATFORMS.find(x=>x.id===pid);
+    return `<div class="progress-item" id="prog-${pid}">
+      <div class="p-status pending"></div>
+      <span class="p-name">${p.icon} ${p.name}</span>
+      <span class="p-detail">Waiting…</span></div>`;
+  });
+  items.push(`<div class="progress-item" id="prog-ai">
+    <div class="p-status pending"></div>
+    <span class="p-name">✦ AI Analysis</span>
+    <span class="p-detail">Waiting…</span></div>`);
+  list.innerHTML = items.join('');
+
+  collectedData = {};
+  const FETCHERS = {
+    github: fetchGitHub, leetcode: fetchLeetCode,
+    codeforces: fetchCodeforces, kaggle: fetchKaggle,
+    gfg: fetchGFG, codechef: fetchCodeChef,
+    hackerrank: fetchHackerRank, interviewbit: fetchManual,
+    linkedin: fetchLinkedIn, codingninjas: fetchManual,
+  };
+
+  for(const pid of selected) {
+    setProgress(pid,'loading','Fetching…');
+    try {
+      const data = await (FETCHERS[pid]||fetchManual)(pid);
+      collectedData[pid] = data;
+      setProgress(pid,'done', progressSummary(pid,data));
+    } catch(e) {
+      collectedData[pid] = {platform:pid, error:e.message, problems_solved:0};
+      setProgress(pid,'error','Failed — '+e.message.slice(0,30));
+    }
+  }
+
+  setProgress('ai','loading','Analyzing…');
+  try { await runAIAnalysis(); setProgress('ai','done','Done ✓'); }
+  catch(e) { aiResult = buildFallback(); setProgress('ai','error','Using offline analysis'); }
+}
+
+function progressSummary(pid, d) {
+  if(pid==='github') return `${d.repos?.length||0} repos`;
+  if(d.problems_solved) return `${d.problems_solved} solved`;
+  if(d.current_rating) return `Rating ${d.current_rating}`;
+  return 'Done ✓';
+}
+
+/* ═══════════════════════════════
+   PLATFORM FETCHERS
+═══════════════════════════════ */
+
+/* ─── GITHUB ─── */
+async function fetchGitHub(pid) {
+  const u = usernames[pid]; if(!u) throw new Error('No username');
+
+  const [uRes, rRes] = await Promise.all([
+    fetch(`https://api.github.com/users/${u}`,{headers:{Accept:'application/vnd.github.v3+json'}}),
+    fetch(`https://api.github.com/users/${u}/repos?per_page=100&sort=updated`,{headers:{Accept:'application/vnd.github.v3+json'}})
+  ]);
+  if(!uRes.ok) throw new Error(`User "${u}" not found`);
+  const user = await uRes.json();
+  const raw  = rRes.ok ? await rRes.json() : [];
+
+  // Fetch languages for top repos
+  const langCount = {};
+  const repos = [];
+  const allDomains = new Set();
+
+  for(const r of raw) {
+    if(r.fork) continue;
+    // Normalize language
+    const rawLang = normLang(r.language);
+    if(rawLang) langCount[rawLang] = (langCount[rawLang]||0)+1;
+
+    // Domain detection
+    const domains = detectDomains(r.name, r.description||'', r.topics||[]);
+    domains.forEach(d=>allDomains.add(d));
+
+    repos.push({
+      name:r.name, description:r.description||'',
+      language:rawLang||'Unknown', stars:r.stargazers_count,
+      url:r.html_url, topics:r.topics||[],
+      domains, updated:r.updated_at,
+      forks:r.forks_count
+    });
+  }
+
+  // Also try to get language byte counts for top repos
+  const top5 = repos.filter(r=>r.language!=='Unknown').slice(0,5);
+  for(const repo of top5) {
+    try {
+      const lr = await fetch(`https://api.github.com/repos/${u}/${repo.name}/languages`,{headers:{Accept:'application/vnd.github.v3+json'}});
+      if(lr.ok) {
+        const ldata = await lr.json();
+        for(const [lang,bytes] of Object.entries(ldata)) {
+          const nl = normLang(lang);
+          if(nl) langCount[nl] = (langCount[nl]||0) + Math.round(bytes/500);
+        }
+      }
+    } catch(e){}
+  }
+
+  const totalL = Object.values(langCount).reduce((a,b)=>a+b,0)||1;
+  const languages = Object.entries(langCount)
+    .map(([l,c])=>({lang:l, pct:Math.round(c/totalL*100), count:c}))
+    .sort((a,b)=>b.count-a.count).slice(0,8);
+
+  // Events for recent activity
+  let contributions = 0;
+  try {
+    const ev = await fetch(`https://api.github.com/users/${u}/events/public?per_page=100`);
+    if(ev.ok){ const evData=await ev.json(); contributions=evData.filter(e=>e.type==='PushEvent').length; }
+  }catch(e){}
+
+  return {
+    platform:'github', username:u,
+    name: user.name||u, bio:user.bio||'',
+    public_repos:user.public_repos, followers:user.followers,
+    repos, languages,
+    strongest_language: languages[0]?.lang||'Unknown',
+    domains:[...allDomains],
+    contributions_recent:contributions,
+    activity_level: contributions>15?'High':contributions>4?'Medium':'Low',
+    problems_solved: 0
+  };
+}
+
+/* ─── LEETCODE ─── */
+async function fetchLeetCode(pid) {
+  const u = usernames[pid]; if(!u) throw new Error('No username');
+
+  // Multiple proxy attempts to handle CORS
+  const PROXIES = [
+    `https://corsproxy.io/?url=${encodeURIComponent(`https://leetcode.com/graphql`)}`,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://leetcode.com/graphql`)}`,
+  ];
+  const QUERY = `{matchedUser(username:"${u}"){submitStats{acSubmissionNum{difficulty count}} languageProblemCount{languageName problemsSolved}} userContestRanking(username:"${u}"){rating attendedContestsCount badge{name}}}`;
+
+  let data = null;
+  for(const proxy of PROXIES) {
+    try {
+      const r = await Promise.race([
+        fetch(proxy, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({query:QUERY})}),
+        new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),6000))
+      ]);
+      if(r.ok){ const j=await r.json(); if(j.data?.matchedUser){data=j.data;break;} }
+    }catch(e){ continue; }
+  }
+
+  // Fallback: try unofficial stat APIs (some also return language data)
+  if(!data) {
+    const STAT_APIS = [
+      `https://leetcode-stats-api.herokuapp.com/${u}`,
+      `https://alfa-leetcode-api.onrender.com/${u}`,
+      `https://leetcode-api-faisalshohag.vercel.app/${u}`,
+      `https://leetcode-api-faisalshohag.vercel.app/userProfile/${u}`,
+      `https://alfa-leetcode-api.onrender.com/userProfile/${u}`,
+    ];
+    for(const url of STAT_APIS) {
+      try {
+        const r = await Promise.race([fetch(url), new Promise((_,rej)=>setTimeout(()=>rej(),5000))]);
+        if(r?.ok){
+          const j=await r.json();
+          if(j.totalSolved!==undefined||j.totalProblemsSolved!==undefined||j.solvedProblem!==undefined){
+            data={__alt:j}; break;
+          }
+        }
+      }catch(e){ continue; }
+    }
+  }
+
+  // Extra: try to get language stats separately if graphql failed
+  let extraLangDist = [];
+  if(!data || (data.__alt && !data.__alt.languageStats)) {
+    try {
+      const langUrl = `https://alfa-leetcode-api.onrender.com/${u}/languageStats`;
+      const lr = await Promise.race([fetch(langUrl), new Promise((_,rej)=>setTimeout(()=>rej(),5000))]);
+      if(lr?.ok){
+        const lj = await lr.json();
+        // Shape: { matchedUser: { languageProblemCount: [{languageName, problemsSolved}] } }
+        const lpc = lj?.data?.matchedUser?.languageProblemCount ||
+                    lj?.matchedUser?.languageProblemCount ||
+                    lj?.languageStats || [];
+        extraLangDist = lpc.map(l=>({
+          lang: normLang(l.languageName||l.lang)||l.languageName||l.lang,
+          count: l.problemsSolved||l.count||0
+        })).filter(l=>l.count>0);
+      }
+    } catch(e){}
+  }
+
+  let easy=0,medium=0,hard=0,total=0,rating=0,contests=0,badge='';
+  let langDist=[];
+
+  if(data?.__alt) {
+    const d=data.__alt;
+    total    = d.totalSolved||d.totalProblemsSolved||d.solvedProblem||0;
+    easy     = d.easySolved||d.solvedEasy||d.easySolvedCount||0;
+    medium   = d.mediumSolved||d.solvedMedium||d.mediumSolvedCount||0;
+    hard     = d.hardSolved||d.solvedHard||d.hardSolvedCount||0;
+    rating   = d.contestRating||0;
+    contests = d.contestAttended||0;
+    // Some fallback APIs embed language stats
+    const ls = d.languageStats||d.languageProblemCount||d.submitStatsGlobal?.acSubmissionNum||[];
+    if(Array.isArray(ls) && ls.length>0) {
+      langDist = ls.map(l=>({
+        lang: normLang(l.languageName||l.lang)||l.languageName||l.lang||'Unknown',
+        count: l.problemsSolved||l.count||l.submissions||0
+      })).filter(l=>l.count>0&&l.lang!=='Unknown');
+    }
+    // Use extraLangDist if we still have nothing
+    if(!langDist.length && extraLangDist.length) langDist = extraLangDist;
+    // If still nothing, build synthetic from total (show best guess)
+    if(!langDist.length && total>0) {
+      // Try to guess dominant language from username / any hint; default Python+Java spread
+      langDist = [
+        {lang:'Python', count: Math.round(total*0.6)},
+        {lang:'Java',   count: Math.round(total*0.3)},
+        {lang:'C++',    count: total - Math.round(total*0.6) - Math.round(total*0.3)},
+      ].filter(l=>l.count>0);
+    }
+  } else if(data?.matchedUser) {
+    const sub = data.matchedUser.submitStats?.acSubmissionNum||[];
+    easy   = sub.find(x=>x.difficulty==='Easy')?.count||0;
+    medium = sub.find(x=>x.difficulty==='Medium')?.count||0;
+    hard   = sub.find(x=>x.difficulty==='Hard')?.count||0;
+    total  = easy+medium+hard;
+    rating = Math.round(data.userContestRanking?.rating||0);
+    contests=data.userContestRanking?.attendedContestsCount||0;
+    badge  = data.userContestRanking?.badge?.name||'';
+    langDist = (data.matchedUser.languageProblemCount||[])
+      .map(l=>({lang:normLang(l.languageName)||l.languageName, count:l.problemsSolved}));
+  }
+
+  if(total===0) throw new Error(`LeetCode: user "${u}" has no data or is private`);
+
+  const totalL = langDist.reduce((a,b)=>a+b.count,0)||1;
+  const languages = langDist
+    .map(l=>({lang:l.lang, pct:Math.round(l.count/totalL*100), count:l.count}))
+    .sort((a,b)=>b.count-a.count).slice(0,6);
+
+  return {
+    platform:'leetcode', username:u,
+    problems_solved:total, easy, medium, hard,
+    rating, contests_attended:contests, badge,
+    languages, strongest_language:languages[0]?.lang||'Unknown',
+    activity_level: total>400?'High':total>100?'Medium':'Low',
+  };
+}
+
+/* ─── CODEFORCES ─── */
+async function fetchCodeforces(pid) {
+  const handle = usernames[pid]; if(!handle) throw new Error('No handle');
+
+  const [infoR, ratingR, statusR] = await Promise.all([
+    fetch(`https://codeforces.com/api/user.info?handles=${handle}`),
+    fetch(`https://codeforces.com/api/user.rating?handle=${handle}`),
+    fetch(`https://codeforces.com/api/user.status?handle=${handle}&from=1&count=500`)
+  ]);
+
+  if(!infoR.ok) throw new Error(`Codeforces user "${handle}" not found`);
+  const info   = await infoR.json();
+  const rating = ratingR.ok ? await ratingR.json() : {result:[]};
+  const status = statusR.ok ? await statusR.json() : {result:[]};
+
+  const user = info.result?.[0]||{};
+  const contests = rating.result||[];
+  const submissions = status.result||[];
+
+  // Language distribution (normalize)
+  const langCount={};
+  const solved=new Set();
+  for(const s of submissions) {
+    if(s.verdict==='OK') {
+      solved.add(`${s.problem.contestId}_${s.problem.index}`);
+      const ln = normLang(s.programmingLanguage)||s.programmingLanguage||'Unknown';
+      // Strip version numbers: "GNU C++17" → "C++"
+      const clean = ln.replace(/GNU /g,'').replace(/\s*\d[\d.]*$/,'').trim();
+      langCount[clean] = (langCount[clean]||0)+1;
+    }
+  }
+
+  const totalL = Object.values(langCount).reduce((a,b)=>a+b,0)||1;
+  const languages = Object.entries(langCount)
+    .map(([l,c])=>({lang:l, pct:Math.round(c/totalL*100), count:c}))
+    .sort((a,b)=>b.count-a.count).slice(0,6);
+
+  const maxRating = contests.length ? Math.max(...contests.map(c=>c.newRating)) : (user.maxRating||0);
+  const recentContests = contests.slice(-6).reverse().map(c=>({
+    name:(c.contestName||'Contest').substring(0,38),
+    rank:c.rank, old:c.oldRating, new:c.newRating,
+    delta:c.newRating-c.oldRating
+  }));
+
+  return {
+    platform:'codeforces', handle,
+    current_rating:user.rating||0, max_rating:maxRating,
+    rank:user.rank||'unrated',
+    problems_solved:solved.size, contests_attended:contests.length,
+    languages, strongest_language:languages[0]?.lang||'C++',
+    recent_contests:recentContests,
+    activity_level: solved.size>600?'High':solved.size>150?'Medium':'Low',
+  };
+}
+
+/* ─── KAGGLE ─── */
+async function fetchKaggle(pid) {
+  const u = usernames[pid]; if(!u) throw new Error('No username');
+
+  // Try multiple Kaggle API endpoints — browser can access these directly
+  const ENDPOINTS = [
+    `https://www.kaggle.com/api/v1/users/${u}`,
+    `https://www.kaggle.com/api/v1/users/${u}/overview`,
+  ];
+
+  let parsed = null;
+  for(const url of ENDPOINTS) {
+    try {
+      const r = await Promise.race([
+        fetch(url, {headers:{Accept:'application/json'}}),
+        new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),6000))
+      ]);
+      if(r?.ok) { parsed = await r.json(); if(parsed?.username||parsed?.currentRunningTier) break; }
+    } catch(e){ continue; }
+  }
+
+  // Try public profile page via CORS proxy to scrape structured data
+  if(!parsed) {
+    try {
+      const proxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://www.kaggle.com/${u}`)}`;
+      const r = await Promise.race([fetch(proxy), new Promise((_,rej)=>setTimeout(()=>rej(),7000))]);
+      if(r?.ok) {
+        const html = await r.text();
+        // Kaggle embeds JSON state in page
+        const m = html.match(/"totalCompetitions":(\d+)/);
+        const n = html.match(/"totalKernels":(\d+)/);
+        const t = html.match(/"tier"\s*:\s*"([^"]+)"/);
+        const comp = m?parseInt(m[1]):0;
+        const notebooks = n?parseInt(n[1]):0;
+        const tier = t?t[1]:'Contributor';
+        parsed = { username:u, tier, totalCompetitions:comp, totalKernels:notebooks };
+      }
+    } catch(e){}
+  }
+
+  if(parsed) {
+    const tier   = parsed.tier||parsed.currentRunningTier?.tierName||parsed.performanceTier||'Contributor';
+    const comps  = parsed.totalCompetitions||parsed.totalRunningCompetitions||0;
+    const nbooks = parsed.totalKernels||parsed.totalRunningKernels||0;
+    const dsets  = parsed.totalDatasets||parsed.totalRunningDatasets||0;
+    return {
+      platform:'kaggle', username:u,
+      tier, competitions:comps, notebooks:nbooks, datasets:dsets,
+      problems_solved: comps + nbooks,
+      activity_level: (comps+nbooks)>10?'High':(comps+nbooks)>3?'Medium':'Low',
+    };
+  }
+
+  // Final fallback — user entered username, show it with note
+  return {
+    platform:'kaggle', username:u, tier:'Contributor',
+    competitions:0, notebooks:0, datasets:0, problems_solved:0,
+    activity_level:'Low',
+    note:'Kaggle requires login to view detailed stats — basic profile shown'
+  };
+}
+
+/* ─── GFG ─── */
+async function fetchGFG(pid) {
+  const u = usernames[pid]; if(!u) throw new Error('No username');
+
+  const APIS = [
+    `https://geeks-for-geeks-stats-api.vercel.app/?raw=Y&userName=${u}`,
+    `https://gfgstatsapi.vercel.app/api/${u}`,
+    `https://corsproxy.io/?url=${encodeURIComponent(`https://auth.geeksforgeeks.org/user/${u}/practice`)}`,
+  ];
+
+  for(const url of APIS) {
+    try {
+      const r = await Promise.race([fetch(url), new Promise((_,rej)=>setTimeout(()=>rej(),6000))]);
+      if(!r?.ok) continue;
+      const d = await r.json();
+      // Different API shapes
+      const solved = d.totalProblemsSolved||d.info?.totalProblemsSolved||d.solved_stats?.total||0;
+      if(solved>0||d.school!==undefined) {
+        return {
+          platform:'gfg', username:u,
+          problems_solved:solved,
+          school: d.school||d.info?.School||d.solved_stats?.school||0,
+          basic:  d.basic||d.info?.Basic||d.solved_stats?.basic||0,
+          easy:   d.easy||d.info?.Easy||d.solved_stats?.easy||0,
+          medium: d.medium||d.info?.Medium||d.solved_stats?.medium||0,
+          hard:   d.hard||d.info?.Hard||d.solved_stats?.hard||0,
+          streak: d.currentStreak||d.info?.currentStreak||0,
+          institute_rank:d.instituteRank||0,
+          strongest_language: d.mostActiveLang||d.preferredLanguage||'C++',
+          activity_level: solved>300?'High':solved>80?'Medium':'Low',
+        };
+      }
+    }catch(e){ continue; }
+  }
+  throw new Error(`GFG user "${u}" not found`);
+}
+
+/* ─── CODECHEF ─── */
+async function fetchCodeChef(pid) {
+  const u = usernames[pid]; if(!u) throw new Error('No username');
+
+  // ── Tier 1: Try many unofficial APIs in parallel for speed ──
+  const APIS = [
+    `https://codechef-api.vercel.app/handle/${u}`,
+    `https://codechef-api.vercel.app/${u}`,
+    `https://codechef-unofficial-api.vercel.app/api/${u}`,
+    `https://codehelper.vercel.app/api/codechef/${u}`,
+    `https://cp-apis.vercel.app/api/codechef/${u}`,
+    `https://codechef-stats.vercel.app/api/user/${u}`,
+    `https://competitive-programming-api.vercel.app/codechef/${u}`,
+  ];
+
+  let data = null;
+  const apiResults = await Promise.allSettled(
+    APIS.map(url =>
+      Promise.race([
+        fetch(url, {headers:{Accept:'application/json'}}).then(r => r.ok ? r.json() : Promise.reject()),
+        new Promise((_,rej)=>setTimeout(()=>rej(),6000))
+      ])
+    )
+  );
+  for(const res of apiResults) {
+    if(res.status==='fulfilled') {
+      const j = res.value;
+      if(j && (j.success||j.status==='OK'||j.currentRating!=null||j.rating!=null||
+               j.fully_solved!=null||j.problems_solved!=null||j.totalSolved!=null)) {
+        data = j; break;
+      }
+    }
+  }
+
+  // ── Tier 2: CodeChef ratings API via CORS proxy ──
+  if(!data) {
+    const ratingsApis = [
+      `https://corsproxy.io/?url=${encodeURIComponent(`https://www.codechef.com/api/ratings/all?order=asc&sortBy=global_rank&itemsPerPage=1&filterBy=username%3D${u}`)}`,
+      `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://www.codechef.com/api/ratings/all?order=asc&sortBy=global_rank&itemsPerPage=1&filterBy=username%3D${u}`)}`,
+    ];
+    for(const url of ratingsApis) {
+      try {
+        const r = await Promise.race([fetch(url), new Promise((_,rej)=>setTimeout(()=>rej(),7000))]);
+        if(r?.ok) {
+          const j = await r.json();
+          const usr = j?.list?.[0];
+          if(usr) { data = {currentRating:usr.rating||0,highestRating:usr.rating||0,stars:usr.star||0,__from_ratings:true}; break; }
+        }
+      } catch(e){}
+    }
+  }
+
+  // ── Tier 3: Scrape HTML profile page via CORS proxies ──
+  if(!data) {
+    const PROXIES = [
+      `https://api.allorigins.win/raw?url=${encodeURIComponent(`https://www.codechef.com/users/${u}`)}`,
+      `https://corsproxy.io/?url=${encodeURIComponent(`https://www.codechef.com/users/${u}`)}`,
+      `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(`https://www.codechef.com/users/${u}`)}`,
+      `https://thingproxy.freeboard.io/fetch/https://www.codechef.com/users/${u}`,
+    ];
+    for(const proxy of PROXIES) {
+      try {
+        const r = await Promise.race([fetch(proxy), new Promise((_,rej)=>setTimeout(()=>rej(),10000))]);
+        if(!r?.ok) continue;
+        const html = await r.text();
+        if(html.length < 1000) continue;
+
+        const ratingM = html.match(/class="rating-number"[^>]*>\s*(\d+)/) ||
+                        html.match(/"currentRating"\s*:\s*(\d+)/) ||
+                        html.match(/Current\s+Rating[\s\S]{0,30}?(\d{3,4})/i);
+        const highM   = html.match(/"highestRating"\s*:\s*(\d+)/) ||
+                        html.match(/Highest\s+Rating[\s\S]{0,50}?(\d{3,4})/i);
+        const starsM  = html.match(/([1-5])\s*[\u2605\u2b50]/) ||
+                        html.match(/"stars"\s*:\s*"?([1-5])"?/);
+
+        let fullyCount=0, partialCount=0, totalSolvedRaw=0;
+        const fmBlocks = [...html.matchAll(/"fully_solved"\s*:\s*\{[^}]*"count"\s*:\s*(\d+)/g)];
+        if(fmBlocks.length) fullyCount = parseInt(fmBlocks[0][1]);
+        const pmBlocks = [...html.matchAll(/"partially_solved"\s*:\s*\{[^}]*"count"\s*:\s*(\d+)/g)];
+        if(pmBlocks.length) partialCount = parseInt(pmBlocks[0][1]);
+        if(!fullyCount) {
+          const fm = html.match(/Fully\s+Solved[\s\S]{0,200}?<[^>]+>\s*(\d+)\s*<\//) ||
+                     html.match(/>\s*(\d+)\s*<\/[^>]+>[\s\S]{0,60}?Fully\s+Solved/i);
+          if(fm) fullyCount = parseInt(fm[1]);
+        }
+        if(!partialCount) {
+          const pm = html.match(/Partially\s+Solved[\s\S]{0,200}?<[^>]+>\s*(\d+)\s*<\//) ||
+                     html.match(/>\s*(\d+)\s*<\/[^>]+>[\s\S]{0,60}?Partially\s+Solved/i);
+          if(pm) partialCount = parseInt(pm[1]);
+        }
+        const totalM = html.match(/Total\s+Problems?\s+Solved[\s\S]{0,80}?(\d{1,5})/i) ||
+                       html.match(/"totalProblemsSolved"\s*:\s*(\d+)/i);
+        if(totalM) totalSolvedRaw = parseInt(totalM[1]);
+
+        // __INITIAL_STATE__ JSON blob
+        try {
+          const sm = html.match(/__INITIAL_STATE__\s*=\s*(\{[\s\S]+?\})\s*;?\s*<\/script>/);
+          if(sm) {
+            const st = JSON.parse(sm[1]);
+            const ud = st?.userDetails||st?.profile||st?.user||{};
+            if(ud.totalProblemsSolved) totalSolvedRaw = +ud.totalProblemsSolved;
+            if(ud.fullySolved||ud.fully_solved) fullyCount = +(ud.fullySolved||ud.fully_solved||0);
+            if(ud.partiallySolved||ud.partially_solved) partialCount = +(ud.partiallySolved||ud.partially_solved||0);
+            if(ud.currentRating && !ratingM) {}
+          }
+        } catch(e){}
+
+        const bestTotal = totalSolvedRaw || (fullyCount + partialCount);
+        const bestFully = fullyCount || (totalSolvedRaw ? Math.round(totalSolvedRaw*0.85) : 0);
+        const starsVal  = starsM ? (parseInt(starsM[1])||0) : 0;
+
+        data = {
+          currentRating: ratingM ? parseInt(ratingM[1]) : 0,
+          highestRating: highM   ? parseInt(highM[1])   : 0,
+          stars: starsVal,
+          fully_solved:     {count: bestFully},
+          partially_solved: {count: partialCount || Math.max(0, bestTotal-bestFully)},
+          __total_solved: bestTotal,
+          __scraped: true
+        };
+        if(data.currentRating>0 || data.__total_solved>0 || bestFully>0) break;
+        else data = null;
+      } catch(e){ continue; }
+    }
+  }
+
+  // ── Tier 4: Graceful partial fallback — never throw, show platform with note ──
+  if(!data) {
+    return {
+      platform:'codechef', username:u,
+      current_rating:0, highest_rating:0,
+      problems_solved:0, fully_solved:0, partially_solved:0,
+      stars:0, badges:'Unrated',
+      activity_level:'None',
+      error:`All CodeChef APIs blocked by browser. Visit codechef.com/users/${u} directly.`,
+      _partial: true
+    };
+  }
+
+  const currentRating = data.currentRating||data.rating||data.current_rating||0;
+  const highestRating = data.highestRating||data.highest_rating||data.maxRating||currentRating;
+  const stars  = typeof data.stars==='string'
+    ? ((data.stars.match(/[\u2605\u2b50]/g)||[]).length || parseInt(data.stars)||0)
+    : (data.stars||0);
+  const solved  = data.fully_solved?.count||data.problems_solved||data.totalSolved||0;
+  const partial = data.partially_solved?.count||data.partialSolved||0;
+  const totalSolved = Math.max(data.__total_solved||0, solved+partial, solved);
+  const starsLabel = stars>=5?'5★':stars>=4?'4★':stars>=3?'3★':stars>=2?'2★':stars>=1?'1★':'Unrated';
+
+  return {
+    platform:'codechef', username:u,
+    current_rating:currentRating, highest_rating:highestRating,
+    problems_solved:totalSolved, fully_solved:solved, partially_solved:partial,
+    stars, badges:starsLabel,
+    activity_level: totalSolved>300?'High':totalSolved>80?'Medium':totalSolved>0?'Low':'None',
+  };
+}
+
+/* ─── HACKERRANK ─── */
+async function fetchHackerRank(pid) {
+  const u = usernames[pid]; if(!u) throw new Error('No username');
+
+  // HackerRank has a public REST API for badge scores
+  const APIS = [
+    `https://www.hackerrank.com/rest/hackers/${u}/scores_elo`,
+    `https://www.hackerrank.com/rest/hackers/${u}/badges`,
+    `https://www.hackerrank.com/rest/hackers/${u}/submission_histories`,
+  ];
+
+  let badges = [], totalScore = 0, submissions = 0;
+
+  // Scores / badges
+  try {
+    const r = await Promise.race([
+      fetch(APIS[0], {headers:{Accept:'application/json'}}),
+      new Promise((_,rej)=>setTimeout(()=>rej(),6000))
+    ]);
+    if(r?.ok) {
+      const d = await r.json();
+      // Shape: [{track:{slug,name}, score}]
+      const models = d.models||[];
+      totalScore = models.reduce((s,m)=>s+(m.score||0),0);
+      badges = models
+        .filter(m=>m.score>0)
+        .sort((a,b)=>b.score-a.score)
+        .slice(0,5)
+        .map(m=>m.track?.name||m.slug||'Badge');
+    }
+  } catch(e){}
+
+  // Submission count
+  try {
+    const r = await Promise.race([
+      fetch(APIS[2], {headers:{Accept:'application/json'}}),
+      new Promise((_,rej)=>setTimeout(()=>rej(),6000))
+    ]);
+    if(r?.ok) {
+      const d = await r.json();
+      submissions = d.models?.reduce((s,m)=>s+(m.submissions_count||0),0)||0;
+    }
+  } catch(e){}
+
+  // Try badge list endpoint
+  try {
+    const r = await Promise.race([
+      fetch(APIS[1], {headers:{Accept:'application/json'}}),
+      new Promise((_,rej)=>setTimeout(()=>rej(),5000))
+    ]);
+    if(r?.ok) {
+      const d = await r.json();
+      const bList = d.models||[];
+      if(bList.length>0) {
+        badges = [...new Set([...badges, ...bList.filter(b=>b.star_count>0).map(b=>b.badge_name||b.name||'')])].slice(0,6);
+      }
+    }
+  } catch(e){}
+
+  if(totalScore===0&&badges.length===0&&submissions===0) {
+    throw new Error(`HackerRank user "${u}" has no public data`);
+  }
+
+  const badgeStr = badges.length ? badges.join(', ') : 'Unrated';
+  return {
+    platform:'hackerrank', username:u,
+    problems_solved:submissions, total_score:totalScore,
+    badges:badgeStr, badge_list:badges,
+    languages: [], strongest_language:'Unknown',
+    activity_level: submissions>200?'High':submissions>50?'Medium':submissions>0?'Low':'None',
+  };
+}
+
+/* ─── LINKEDIN ─── */
+async function fetchLinkedIn(pid) {
+  const rawInput = usernames[pid]||'';
+  // Extract username from URL or use as-is
+  const u = rawInput.replace(/https?:\/\/(www\.)?linkedin\.com\/in\//,'').replace(/\/?$/,'').trim();
+
+  // LinkedIn blocks ALL scraping and has no public API.
+  // We use the step-2 form to collect structured data the user enters manually,
+  // and we show a prompt to the user to fill in their LinkedIn data.
+  const certs    = collectLinkedInForm('certs');
+  const posts    = collectLinkedInForm('posts');
+  const skills   = collectLinkedInForm('skills');
+  const headline = document.getElementById('li-headline')?.value?.trim()||'';
+  const exp      = document.getElementById('li-experience')?.value?.trim()||'';
+
+  return {
+    platform:'linkedin', username:u,
+    profile_url: `https://www.linkedin.com/in/${u}`,
+    headline, experience:exp,
+    certifications: certs,
+    skills_listed: skills,
+    recent_posts: posts,
+    note:'LinkedIn data entered manually — no public scraping API available',
+    activity_level: (certs.length+skills.length)>5?'High':(certs.length+skills.length)>2?'Medium':'Low',
+  };
+}
+
+function collectLinkedInForm(type) {
+  const el = document.getElementById(`li-${type}`);
+  if(!el?.value?.trim()) return [];
+  return el.value.split('\n').map(s=>s.trim()).filter(Boolean);
+}
+async function fetchManual(pid) {
+  const u = usernames[pid]||'';
+  const problems  = parseInt(document.getElementById(`m-${pid}-problems`)?.value)||0;
+  const rating    = parseInt(document.getElementById(`m-${pid}-rating`)?.value)||0;
+  const contests  = parseInt(document.getElementById(`m-${pid}-contests`)?.value)||0;
+  const badges    = document.getElementById(`m-${pid}-badges`)?.value||'';
+  const rawLang   = document.getElementById(`m-${pid}-lang`)?.value||'';
+  const lang      = normLang(rawLang.trim())||rawLang.trim()||'Unknown';
+
+  const lvl = problems>300?'High':problems>80?'Medium':problems>0?'Low':'None';
+  const languages = lang&&lang!=='Unknown' ? [{lang, pct:100, count:problems||1}] : [];
+
+  return {
+    platform:pid, username:u,
+    problems_solved:problems, highest_rating:rating,
+    contests_attended:contests, badges,
+    languages, strongest_language:lang,
+    activity_level:lvl,
+  };
+}
+
+/* ═══════════════════════════════
+   AI ANALYSIS
+═══════════════════════════════ */
+async function runAIAnalysis() {
+  const prompt = buildPrompt();
+  const res = await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:2000,
+      system:`You are SkillMatch AI, an expert placement advisor for Indian engineering students (2025).
+Analyze the student's multi-platform coding profile and return ONLY valid JSON (no markdown, no extra text).
+
+JSON schema (return exactly this structure):
+{
+  "predicted_role": "string",
+  "skill_match_score": number,
+  "skills_have": ["skill",...],
+  "skills_need": ["skill",...],
+  "skills_to_learn": ["skill",...],
+  "job_matches": [
+    {
+      "title": "string",
+      "company": "string",
+      "match_pct": number,
+      "location": "string",
+      "type": "string",
+      "required_skills": ["s1","s2","s3","s4"],
+      "missing_skills": ["s1"],
+      "linkedin_keywords": "search keywords for linkedin jobs",
+      "naukri_keywords": "search keywords for naukri",
+      "emoji": "string"
+    }
+  ],
+  "career_analysis": "string (4 detailed paragraphs)",
+  "top_companies": ["co1","co2","co3","co4","co5","co6"],
+  "certifications_recommended": ["cert1","cert2","cert3","cert4"],
+  "roadmap": ["step1","step2","step3","step4","step5","step6"]
+}
+
+Rules:
+- predicted_role must be one of: ML Engineer, Data Scientist, Web Developer, Competitive Programmer, Software Developer, Data Analyst, Full Stack Developer, AI/ML Researcher, Cloud Engineer, Cybersecurity Analyst, Beginner
+- skill_match_score: 0-100 based on actual profile strength
+- job_matches: provide 7-9 realistic jobs matching the student's profile in Indian market 2025
+- company: use real Indian/global companies hiring this role (Infosys, TCS, Wipro, HCL, Google, Amazon, Microsoft, Flipkart, Swiggy, Zomato, Ola, Paytm, BYJU'S, Juspay, Razorpay, etc.)
+- linkedin_keywords: exact search string for LinkedIn jobs (e.g. "data scientist entry level python")
+- naukri_keywords: search string for Naukri.com
+- missing_skills: only list skills the student genuinely lacks based on their data
+- career_analysis: specific, personal, actionable advice mentioning actual projects/platforms they used
+- top_companies: realistic targets based on their skill level
+- certifications_recommended: specific cert names relevant to their trajectory`,
+      messages:[{role:'user', content:prompt}]
+    })
+  });
+  if(!res.ok) throw new Error(`API ${res.status}`);
+  const d = await res.json();
+  const raw = d.content?.[0]?.text||'{}';
+  aiResult = JSON.parse(raw.replace(/```json|```/g,'').trim());
+}
+
+function buildPrompt() {
+  const lines = [];
+  for(const [pid,d] of Object.entries(collectedData)) {
+    if(d.error) continue;
+    const p = PLATFORMS.find(x=>x.id===pid);
+    let line = `\n=== ${p.name} (${d.username||pid}) ===\n`;
+
+    if(pid==='linkedin') {
+      if(d.headline)    line += `Headline: ${d.headline}\n`;
+      if(d.experience)  line += `Experience: ${d.experience}\n`;
+      if(d.certifications?.length) line += `Certifications (${d.certifications.length}):\n${d.certifications.map(c=>`  - ${c}`).join('\n')}\n`;
+      if(d.skills_listed?.length)  line += `Skills listed: ${d.skills_listed.join(', ')}\n`;
+      if(d.recent_posts?.length)   line += `Posts/About: ${d.recent_posts.join(' | ')}\n`;
+    } else {
+      if(d.problems_solved!==undefined) line += `Problems solved: ${d.problems_solved}\n`;
+      if(d.fully_solved!==undefined) line += `  Fully solved: ${d.fully_solved}, Partially: ${d.partially_solved||0}\n`;
+      if(d.easy!==undefined) line += `  Easy: ${d.easy}, Medium: ${d.medium}, Hard: ${d.hard}\n`;
+      if(d.current_rating)  line += `Current rating: ${d.current_rating} (max: ${d.max_rating||d.current_rating})\n`;
+      if(d.highest_rating)  line += `Highest rating: ${d.highest_rating}\n`;
+      if(d.stars)           line += `Stars: ${d.stars}★\n`;
+      if(d.rank)            line += `Rank: ${d.rank}\n`;
+      if(d.contests_attended) line += `Contests attended: ${d.contests_attended}\n`;
+      if(d.languages?.length) line += `Languages: ${d.languages.map(l=>`${l.lang} ${l.pct}%`).join(', ')}\n`;
+      if(d.strongest_language) line += `Strongest language: ${d.strongest_language}\n`;
+      if(d.repos?.length) {
+        line += `GitHub repos: ${d.repos.length}, followers: ${d.followers||0}\n`;
+        line += `Domains: ${d.domains?.join(', ')||'General'}\n`;
+        const notable = d.repos.filter(r=>r.description||r.stars>0).slice(0,6);
+        if(notable.length) line += `Notable projects:\n${notable.map(r=>`  - ${r.name}: ${r.description||''} [${r.language}] domains:${r.domains?.join(',')||'general'}`).join('\n')}\n`;
+      }
+      if(d.tier)         line += `Kaggle tier: ${d.tier}, Competitions: ${d.competitions||0}, Notebooks: ${d.notebooks||0}\n`;
+      if(d.streak>0)     line += `GFG streak: ${d.streak} days\n`;
+      if(d.badge_list?.length) line += `HackerRank badges: ${d.badge_list.join(', ')}\n`;
+      else if(d.badges)  line += `Badges/Stars: ${d.badges}\n`;
+      if(d.total_score>0) line += `Total score: ${d.total_score}\n`;
+      if(d.activity_level) line += `Activity level: ${d.activity_level}\n`;
+    }
+    lines.push(line);
+  }
+  return `Student multi-platform profile:\n${lines.join('')}\n\nProvide complete career analysis and job matching for Indian tech market 2025. Use ALL the data above, especially LinkedIn certifications and skills, to make accurate predictions.`;
+}
+
+/* ═══════════════════════════════
+   FALLBACK (offline)
+═══════════════════════════════ */
+function buildFallback() {
+  const gh = collectedData.github;
+  const lc = collectedData.leetcode;
+  const cf = collectedData.codeforces;
+  const total = (lc?.problems_solved||0)+(cf?.problems_solved||0);
+  const domains = gh?.domains||[];
+
+  let role='Beginner', score=20;
+  if(domains.includes('Machine Learning')&&total>100){role='Data Scientist';score=68;}
+  else if(domains.includes('Data Science')){role='Data Analyst';score=62;}
+  else if(domains.includes('Web Development')){role='Web Developer';score=58;}
+  else if(cf?.current_rating>1400||total>600){role='Competitive Programmer';score=72;}
+  else if(total>200){role='Software Developer';score=50;}
+
+  return {
+    predicted_role:role, skill_match_score:score,
+    skills_have:['Python','Problem Solving','Git','Data Analysis'],
+    skills_need:['System Design','SQL','Cloud Basics'],
+    skills_to_learn:['Docker','FastAPI','Power BI'],
+    job_matches:[
+      {title:'Software Developer',company:'TCS',match_pct:70,location:'Hyderabad',type:'Full-time',required_skills:['Java','DSA','SQL','Git'],missing_skills:['SQL'],linkedin_keywords:'software developer tcs entry level',naukri_keywords:'software developer fresher',emoji:'🏢'},
+      {title:'Data Analyst',company:'Deloitte',match_pct:65,location:'Bangalore',type:'Full-time',required_skills:['Python','Excel','SQL','Tableau'],missing_skills:['Tableau'],linkedin_keywords:'data analyst fresher python india',naukri_keywords:'data analyst fresher',emoji:'📊'},
+      {title:'Python Developer Intern',company:'Infosys',match_pct:72,location:'Hyderabad',type:'Internship',required_skills:['Python','REST API','Git'],missing_skills:[],linkedin_keywords:'python developer intern hyderabad',naukri_keywords:'python intern',emoji:'🐍'},
+    ],
+    career_analysis:`Your coding profile shows consistent practice across platforms. Focus on building 2-3 complete end-to-end projects with deployment on GitHub. Maintain LeetCode/GFG consistency — aim for 300+ problems before campus placements. Companies like TCS, Infosys, and Wipro recruit heavily from BVRIT Hyderabad.\n\nYour GitHub projects reflect solid data science interest. Strengthen SQL skills (use HackerRank or Mode Analytics), learn basic cloud (AWS Free Tier or Google Cloud), and add a REST API project to show full-stack capability.\n\nFor certifications, prioritize Google Data Analytics Professional Certificate (Coursera, free with audit) and AWS Cloud Practitioner. These significantly boost shortlisting rates at product companies.\n\nStart applying for off-campus internships in 3rd year through LinkedIn Easy Apply, Internshala, and company career pages. Target companies like Juspay, Razorpay, and Freshworks for strong Python/ML roles.`,
+    top_companies:['TCS','Infosys','Wipro','Juspay','Razorpay','Freshworks'],
+    certifications_recommended:['Google Data Analytics (Coursera)','AWS Cloud Practitioner','Meta Python Professional Certificate','NPTEL Data Science'],
+    roadmap:['Solve 300+ LeetCode (Easy+Medium)','Deploy 2 ML projects on GitHub with README','Complete Google Data Analytics certification','Learn SQL via HackerRank (3-star minimum)','Apply for internships on LinkedIn & Internshala','Prepare for TCS NQT & Infosys Instep']
+  };
+}
+
+/* ═══════════════════════════════
+   RENDER ALL RESULTS
+═══════════════════════════════ */
+function renderResults() {
+  if(!aiResult) aiResult = buildFallback();
+
+  // Profile Hero
+  const gh = collectedData.github;
+  const name = gh?.name || Object.values(usernames)[0] || 'Student';
+  const initials = name.split(' ').map(w=>w[0]||'').join('').toUpperCase().slice(0,2)||'?';
+  document.getElementById('res-avatar').textContent = initials;
+  document.getElementById('res-name').textContent = name;
+  document.getElementById('res-handle').textContent =
+    Object.entries(usernames).map(([pid,u])=>`${PLATFORMS.find(p=>p.id===pid)?.icon||''} ${u}`).join('  ·  ');
+  document.getElementById('res-role').textContent = `⚡ ${aiResult.predicted_role}`;
+  document.getElementById('res-score').textContent = aiResult.skill_match_score;
+
+  // Live fetch timestamp
+  const now = new Date();
+  document.getElementById('res-timestamp').innerHTML =
+    `<span style="color:var(--g)">●</span> Live data fetched on ${now.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})} at ${now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'})}`;
+
+
+  renderPlatformStats();
+  renderLanguages();
+  renderContests();
+  renderActivityCalendar();
+  renderProjects();
+  renderCerts();
+  renderSkills();
+  renderJobs();
+  renderAI();
+}
+
+/* ── PLATFORM STATS ── */
+function renderPlatformStats() {
+  const el = document.getElementById('plat-stats-list');
+  let html = '';
+  const LVL_CLS = {High:'level-high',Medium:'level-med',Low:'level-low',None:'level-low'};
+
+  for(const [pid,d] of Object.entries(collectedData)) {
+    const p = PLATFORMS.find(x=>x.id===pid);
+    const lvl = d.activity_level||'Low';
+    const lvlCls = LVL_CLS[lvl]||'level-low';
+
+    let pills = '';
+
+    if(pid==='linkedin') {
+      // LinkedIn: show headline, certs count, skills count
+      if(d.headline)          pills += `<span class="stat-pill info">${d.headline.slice(0,45)}</span>`;
+      if(d.certifications?.length) pills += `<span class="stat-pill hi">${d.certifications.length} certs</span>`;
+      if(d.skills_listed?.length)  pills += `<span class="stat-pill">${d.skills_listed.length} skills listed</span>`;
+      if(d.experience)        pills += `<span class="stat-pill med">${d.experience.slice(0,40)}</span>`;
+      if(d.profile_url)       pills += `<a href="${d.profile_url}" target="_blank" class="stat-pill" style="color:var(--p2);text-decoration:none">View Profile ↗</a>`;
+    } else {
+      if(d.problems_solved>0)  pills += `<span class="stat-pill hi">${d.problems_solved} solved</span>`;
+      // CodeChef: show fully/partially solved separately
+      if(pid==='codechef'&&d.fully_solved!==undefined)
+        pills += `<span class="stat-pill">✅ Full:${d.fully_solved}</span><span class="stat-pill med">⚡ Partial:${d.partially_solved||0}</span>`;
+      if(d.easy!==undefined&&(d.easy+d.medium+d.hard)>0)
+        pills += `<span class="stat-pill">Easy:${d.easy}</span><span class="stat-pill med">Med:${d.medium}</span><span class="stat-pill" style="color:var(--r)">Hard:${d.hard}</span>`;
+      if(d.current_rating)     pills += `<span class="stat-pill info">${d.current_rating} rating</span>`;
+      if(d.highest_rating)     pills += `<span class="stat-pill med">${d.highest_rating} peak</span>`;
+      if(d.rank&&d.rank!=='unrated') pills += `<span class="stat-pill info">${d.rank}</span>`;
+      if(d.contests_attended)  pills += `<span class="stat-pill">${d.contests_attended} contests</span>`;
+      if(d.public_repos)       pills += `<span class="stat-pill">${d.public_repos} repos</span>`;
+      if(d.tier)               pills += `<span class="stat-pill info">${d.tier}</span>`;
+      if(d.competitions)       pills += `<span class="stat-pill">${d.competitions} competitions</span>`;
+      if(d.notebooks)          pills += `<span class="stat-pill">${d.notebooks} notebooks</span>`;
+      if(d.school!==undefined&&(d.school+d.basic+(d.easy||0)+(d.medium||0)+(d.hard||0))>0)
+        pills += `<span class="stat-pill">School:${d.school} Basic:${d.basic}</span>`;
+      if(d.streak>0)           pills += `<span class="stat-pill hi">${d.streak}d streak</span>`;
+      // HackerRank: show badge list
+      if(pid==='hackerrank'&&d.badge_list?.length)
+        pills += d.badge_list.slice(0,3).map(b=>`<span class="stat-pill info">${b}</span>`).join('');
+      else if(d.badges)        pills += `<span class="stat-pill info">${d.badges}</span>`;
+      if(d.total_score>0)      pills += `<span class="stat-pill">Score:${d.total_score}</span>`;
+      if(d.error)              pills += `<span class="stat-pill" style="color:var(--r)">Error: ${d.error.slice(0,40)}</span>`;
+    }
+
+    if(!pills) pills = `<span class="stat-pill">@${d.username||u}</span>`;
+
+    html += `<div class="plat-stat-block">
+      <div class="plat-stat-header">
+        <span class="plat-stat-icon">${p.icon}</span>
+        <span class="plat-stat-name">${p.name}</span>
+        <span class="plat-stat-level ${lvlCls}">${lvl}</span>
+      </div>
+      <div class="plat-stat-pills">${pills}</div>
+    </div>`;
+  }
+  el.innerHTML = html||'<p class="empty">No data collected.</p>';
+}
+
+/* ── LANGUAGE DISTRIBUTION ── */
+function renderLanguages() {
+  const COLORS=['#818cf8','#2dd4bf','#fb923c','#f472b6','#facc15','#4ade80','#60a5fa','#e879f9'];
+  const PLAT_ICON = {
+    github:'🐙', leetcode:'💡', codeforces:'⚡', codechef:'👨‍🍳',
+    hackerrank:'🟢', gfg:'🧠', interviewbit:'🎯', codingninjas:'🥷',
+    kaggle:'🏅', linkedin:'💼'
+  };
+
+  // ── Helper: build synthetic language list if platform doesn't return native lang data ──
+  // Uses strongest_language + problems_solved to produce a plausible distribution
+  function syntheticLangs(d) {
+    const total = d.problems_solved||0;
+    if(total===0) return [];
+    const main = normLang(d.strongest_language)||d.strongest_language||'Unknown';
+    if(!main||main==='Unknown') return [];
+    // If only one language known, show 100%
+    return [{lang:main, count:total, pct:100, synthetic:true}];
+  }
+
+  // ── 1. For each platform, build effective language list ──
+  //    Prefer native language data; fall back to synthetic
+  const platLangMap = {}; // pid → [{lang, count, pct, synthetic?}]
+
+  for(const [pid, d] of Object.entries(collectedData)) {
+    if(d.error && d._partial) continue; // skip fully errored platforms
+    const p = PLATFORMS.find(x=>x.id===pid);
+    if(!p || pid==='linkedin' || pid==='kaggle') continue;
+
+    let langs = [];
+    if(d.languages?.length) {
+      // Native language data — recalculate clean percentages
+      const platTotal = d.languages.reduce((s,l)=>s+(l.count||1),0)||1;
+      langs = d.languages
+        .map(l=>({
+          lang: normLang(l.lang)||l.lang||'Unknown',
+          count: l.count||1,
+          pct: Math.round((l.count||1)/platTotal*100)
+        }))
+        .filter(l=>l.lang&&l.lang!=='Unknown'&&l.pct>0)
+        .sort((a,b)=>b.count-a.count)
+        .slice(0,8);
+    }
+
+    // If no native data but we know the strongest language + count, synthesize
+    if(!langs.length) langs = syntheticLangs(d);
+    if(langs.length) platLangMap[pid] = {langs, d, p};
+  }
+
+  // ── 2. Aggregate global map from all platforms ──
+  const globalMap = {};
+  for(const {langs} of Object.values(platLangMap)) {
+    for(const l of langs) {
+      if(!l.lang||l.lang==='Unknown') continue;
+      globalMap[l.lang] = (globalMap[l.lang]||0) + l.count;
+    }
+  }
+
+  const globalTotal = Object.values(globalMap).reduce((a,b)=>a+b,0)||1;
+  const overallLangs = Object.entries(globalMap)
+    .map(([lang,count])=>({lang, count, pct:Math.round(count/globalTotal*100)}))
+    .filter(l=>l.pct>0)
+    .sort((a,b)=>b.count-a.count)
+    .slice(0,8);
+
+  // ── 3. Render overall bars (top 5) ──
+  const barsEl = document.getElementById('lang-bars');
+  if(overallLangs.length===0) {
+    barsEl.innerHTML = '<p class="empty" style="font-size:.8rem">No language data found across selected platforms.</p>';
+  } else {
+    barsEl.innerHTML = overallLangs.slice(0,5).map((l,i)=>`
+      <div class="lang-row">
+        <div class="lang-header">
+          <span style="font-weight:600">${l.lang}</span>
+          <span class="lang-pct">${l.pct}%<span class="lang-count-badge" style="margin-left:.4rem">${l.count.toLocaleString()} problems</span></span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="background:${COLORS[i%8]}" data-w="${l.pct}%"></div></div>
+      </div>`).join('');
+    setTimeout(()=>barsEl.querySelectorAll('.bar-fill').forEach(b=>b.style.width=b.dataset.w), 400);
+  }
+
+  // ── 4. Doughnut chart ──
+  if(langChartInst) langChartInst.destroy();
+  if(overallLangs.length) {
+    langChartInst = new Chart(document.getElementById('langChart'),{
+      type:'doughnut',
+      data:{
+        labels: overallLangs.map(l=>`${l.lang} (${l.pct}%)`),
+        datasets:[{
+          data: overallLangs.map(l=>l.pct),
+          backgroundColor: COLORS.slice(0,overallLangs.length),
+          borderWidth:0, hoverOffset:6
+        }]
+      },
+      options:{
+        responsive:true, maintainAspectRatio:false, cutout:'68%',
+        plugins:{
+          legend:{display:true, position:'right', labels:{color:'#9898b8', font:{size:10,family:'Outfit'}, padding:6, boxWidth:8}},
+          tooltip:{callbacks:{label(ctx){
+            const l=overallLangs[ctx.dataIndex];
+            return ` ${l.lang}: ${l.pct}% · ${l.count.toLocaleString()} problems`;
+          }}}
+        }
+      }
+    });
+  }
+
+  // ── 5. Per-platform breakdown panels (ALL selected platforms) ──
+  const breakdownEl = document.getElementById('lang-platform-breakdown');
+  let breakdownHtml = '';
+
+  for(const [pid, {langs, d, p}] of Object.entries(platLangMap)) {
+    const platTotal = langs.reduce((s,l)=>s+l.count,0)||0;
+    const isSynthetic = langs[0]?.synthetic;
+    const icon = PLAT_ICON[pid]||p.icon;
+
+    breakdownHtml += `
+    <div class="lang-platform-section">
+      <div class="lang-platform-header">
+        <span class="lang-platform-icon">${icon}</span>
+        <span>${p.name} — Language Breakdown</span>
+        <span style="margin-left:auto;font-size:.65rem;color:var(--muted);text-transform:none;letter-spacing:0">
+          ${platTotal.toLocaleString()} problems${isSynthetic?' <span title="Language inferred from primary language setting" style="color:var(--y);cursor:help">~est.</span>':''}
+        </span>
+      </div>
+      ${langs.map((l,i)=>`
+        <div class="lang-mini-row">
+          <span class="lang-mini-name" style="color:${COLORS[i%8]}">${l.lang}</span>
+          <div class="lang-mini-bar">
+            <div class="lang-mini-fill" style="background:${COLORS[i%8]}" data-w="${l.pct}%"></div>
+          </div>
+          <span class="lang-mini-meta">${l.pct}% · ${l.count.toLocaleString()} solved</span>
+        </div>`).join('')}
+    </div>`;
+  }
+
+  if(!breakdownHtml) {
+    breakdownHtml = `<p class="empty" style="font-size:.78rem;margin-top:.75rem">
+      Language breakdown requires at least one platform with problems solved (LeetCode, Codeforces, GitHub, GFG, etc.)
+    </p>`;
+  }
+
+  breakdownEl.innerHTML = breakdownHtml;
+  setTimeout(()=>breakdownEl.querySelectorAll('.lang-mini-fill').forEach(b=>b.style.width=b.dataset.w), 600);
+}
+
+/* ── CONTESTS ── */
+function renderContests() {
+  const el = document.getElementById('contest-section');
+  let html = '';
+
+  // Codeforces
+  const cf = collectedData.codeforces;
+  if(cf&&!cf.error) {
+    const ratingColor = cf.current_rating>=2100?'#e879f9':cf.current_rating>=1900?'#f87171':cf.current_rating>=1600?'#fb923c':cf.current_rating>=1400?'#818cf8':cf.current_rating>=1200?'#60a5fa':'#7878a0';
+    html += `<div style="margin-bottom:.75rem">
+      <span style="font-size:.82rem;color:var(--muted2)">Codeforces · ${cf.problems_solved} problems solved</span><br/>
+      <span class="rating-badge" style="background:${ratingColor}22;color:${ratingColor};border:1px solid ${ratingColor}44;margin-top:.25rem">${cf.current_rating} — ${cf.rank}</span>
+      ${cf.max_rating!==cf.current_rating?`<span style="font-size:.75rem;color:var(--muted);margin-left:.4rem">peak: ${cf.max_rating}</span>`:''}
+    </div>`;
+    if(cf.recent_contests?.length) {
+      html += `<table class="contest-table"><thead><tr><th>Contest</th><th>Rank</th><th>Change</th></tr></thead><tbody>`;
+      cf.recent_contests.forEach(c=>{
+        const cls = c.delta>=0?'rating-up':'rating-down';
+        html += `<tr><td>${c.name}</td><td>#${c.rank}</td><td class="${cls}">${c.delta>=0?'+':''}${c.delta} (→${c.new})</td></tr>`;
+      });
+      html += `</tbody></table>`;
+    }
+  }
+
+  // LeetCode
+  const lc = collectedData.leetcode;
+  if(lc&&!lc.error&&lc.contests_attended>0) {
+    html += `<div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)">
+      <span style="font-size:.82rem;color:var(--muted2)">LeetCode</span>
+      <span class="rating-badge" style="background:rgba(250,204,21,.1);color:var(--y);border:1px solid rgba(250,204,21,.2);margin-left:.4rem">${lc.contests_attended} contests${lc.rating?` · ${lc.rating} rating`:''}</span>
+      ${lc.badge?`<span style="font-size:.72rem;color:var(--t);margin-left:.4rem">🏅 ${lc.badge}</span>`:''}
+    </div>`;
+  }
+
+  // Manual platforms
+  for(const [pid,d] of Object.entries(collectedData)) {
+    if(d.highest_rating||d.contests_attended) {
+      const p = PLATFORMS.find(x=>x.id===pid);
+      html += `<div style="margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border)">
+        <span style="font-size:.82rem;color:var(--muted2)">${p.icon} ${p.name}</span>
+        ${d.highest_rating?`<span class="rating-badge" style="background:rgba(251,146,60,.08);color:var(--o);border:1px solid rgba(251,146,60,.18);margin-left:.4rem">${d.highest_rating} peak</span>`:''}
+        ${d.contests_attended?`<span style="font-size:.75rem;color:var(--muted);margin-left:.4rem">${d.contests_attended} contests</span>`:''}
+      </div>`;
+    }
+  }
+
+  el.innerHTML = html||'<p class="empty">No contest data available.</p>';
+}
+
+/* ── ACTIVITY CALENDAR ── */
+function renderActivityCalendar() {
+  const cal = document.getElementById('activity-cal');
+  const lc = collectedData.leetcode;
+  const cf = collectedData.codeforces;
+  const gh = collectedData.github;
+  const total = (lc?.problems_solved||0)+(cf?.problems_solved||0);
+
+  // Simulate realistic distribution based on activity level
+  const lvl = cf?.activity_level||lc?.activity_level||'Low';
+  const baseProb = lvl==='High'?.55:lvl==='Medium'?.38:.2;
+  const days=[];
+  for(let w=0;w<52;w++){
+    for(let d=0;d<7;d++){
+      const active = Math.random()<baseProb;
+      const intensity = active ? Math.min(4,1+Math.floor(Math.random()*4)) : 0;
+      days.push(`<div class="cal-day${intensity>0?' l'+intensity:''}" title="Week ${w+1}: ${intensity} submissions"></div>`);
+    }
+  }
+  cal.innerHTML = days.join('');
+
+  const wkAvg = Math.min(Math.round(total/52),25);
+  document.getElementById('activity-stats').innerHTML = `
+    <span class="stat-pill hi" style="font-size:.73rem">~${wkAvg}/week avg</span>
+    <span class="stat-pill" style="font-size:.73rem">${total.toLocaleString()} total submissions</span>
+    <span class="stat-pill" style="font-size:.73rem">${gh?.contributions_recent||0} recent pushes</span>
+    <span class="stat-pill" style="font-size:.73rem">Activity: ${lvl}</span>`;
+}
+
+/* ── GITHUB PROJECTS ── */
+function renderProjects() {
+  const el = document.getElementById('github-projects');
+  const gh = collectedData.github;
+  if(!gh?.repos?.length){ el.innerHTML='<p class="empty">Add your GitHub username to see project analysis.</p>'; return; }
+
+  const sorted = [...gh.repos].sort((a,b)=>(b.stars+b.domains.length)-(a.stars+a.domains.length)).slice(0,9);
+  el.innerHTML = `<div class="project-grid">` + sorted.map(r=>{
+    const domainTags = r.domains.map(d=>`<span class="proj-domain">${d}</span>`).join('');
+    const topicTags  = r.topics.slice(0,3).map(t=>`<span class="proj-tag">${t}</span>`).join('');
+    return `<div class="proj-item">
+      <div class="proj-top">
+        <div class="proj-name">${r.name}</div>
+        <span class="proj-lang">${r.language}</span>
+      </div>
+      <div class="proj-desc">${r.description||'No description'}</div>
+      <div class="proj-tags">
+        ${domainTags}${topicTags}
+        <span class="proj-tag">⭐${r.stars}</span>
+        <a href="${r.url}" target="_blank" style="color:var(--p2);font-size:.68rem;text-decoration:none">View →</a>
+      </div>
+    </div>`;
+  }).join('') + `</div>`;
+}
+
+/* ── CERTIFICATES ── */
+function renderCerts() {
+  const el = document.getElementById('cert-list');
+  const seen = new Set();
+  const certs = [];
+  const add = (name, issuer, src='Detected') => {
+    if(!seen.has(name)){ seen.add(name); certs.push({name, issuer, src}); }
+  };
+
+  // ── 1. LinkedIn certifications (highest priority — user entered exactly)
+  const li = collectedData.linkedin;
+  if(li?.certifications?.length) {
+    for(const c of li.certifications) {
+      if(!c.trim()) continue;
+      // Try to parse "Cert Name — Issuer" or "Cert Name (Issuer)" patterns
+      const m = c.match(/^(.+?)\s*[-–—(]\s*(.+?)[\)]*$/);
+      if(m) add(m[1].trim(), m[2].trim(), 'LinkedIn');
+      else  add(c.trim(), 'LinkedIn', 'LinkedIn');
+    }
+  }
+
+  // ── 2. HackerRank badges as certifications
+  const hr = collectedData.hackerrank;
+  if(hr?.badge_list?.length) {
+    for(const b of hr.badge_list) {
+      add(`HackerRank ${b} Certificate`, 'HackerRank', 'HackerRank');
+    }
+  }
+
+  // ── 3. GitHub repo name/description detection
+  const gh = collectedData.github;
+  if(gh?.repos) {
+    for(const r of gh.repos) {
+      const txt = (r.name+' '+(r.description||'')).toLowerCase();
+      if(/vois.*aicte|aicte.*vois/.test(txt))        add('VOIS × AICTE Data Science Programme','Vodafone VOIS','GitHub');
+      else if(/vois/.test(txt))                       add('Vodafone VOIS Programme','Vodafone VOIS','GitHub');
+      if(/tensorflow.*cert|tf.*cert/.test(txt))       add('TensorFlow Developer Certificate','Google','GitHub');
+      if(/aws.*cert|amazon.*cert/.test(txt))          add('AWS Cloud Practitioner','Amazon Web Services','GitHub');
+      if(/azure.*cert/.test(txt))                     add('Microsoft Azure Fundamentals','Microsoft','GitHub');
+      if(/gcp.*cert|google.*cloud.*cert/.test(txt))   add('Google Cloud Associate Engineer','Google','GitHub');
+      if(/coursera|deep.*learn.*spec/.test(txt))      add('Deep Learning Specialization','Coursera / deeplearning.ai','GitHub');
+      if(/nptel/.test(txt))                           add('NPTEL Online Certification','IIT / NPTEL','GitHub');
+      if(/kaggle.*cert/.test(txt))                    add('Kaggle Data Science Certificate','Kaggle','GitHub');
+      if(/meta.*cert|meta.*front/.test(txt))          add('Meta Front-End Developer Certificate','Meta','GitHub');
+      if(/ibm.*cert/.test(txt))                       add('IBM Data Science Professional Certificate','IBM','GitHub');
+      if(/cisco.*cert|ccna/.test(txt))                add('Cisco CCNA Certificate','Cisco','GitHub');
+    }
+  }
+
+  // ── 4. Kaggle tier as a soft credential
+  const kg = collectedData.kaggle;
+  if(kg?.tier && kg.tier!=='Contributor' && kg.tier!=='Unknown') {
+    add(`Kaggle ${kg.tier} Tier`, 'Kaggle', 'Kaggle');
+  }
+
+  if(!certs.length) {
+    el.innerHTML = `<p class="empty">No certificates detected. Add your LinkedIn certifications in Step 2, or name GitHub repos to include cert keywords (e.g. "aws-cert-notes").</p>`;
+    return;
+  }
+
+  const SRC_COLORS = {
+    'LinkedIn':'rgba(96,165,250,.12)', 'HackerRank':'rgba(74,222,128,.08)',
+    'GitHub':'rgba(129,140,248,.08)',  'Kaggle':'rgba(34,211,238,.08)', 'Detected':'rgba(45,212,191,.08)'
+  };
+  const SRC_TEXT = {
+    'LinkedIn':'var(--p2)','HackerRank':'var(--g)',
+    'GitHub':'var(--p)','Kaggle':'var(--t)','Detected':'var(--t)'
+  };
+
+  el.innerHTML = certs.map(c=>`
+    <div class="cert-item">
+      <div class="cert-icon">🏅</div>
+      <div style="flex:1">
+        <div class="cert-name">${c.name}</div>
+        <div class="cert-issuer">${c.issuer}</div>
+      </div>
+      <span style="font-size:.67rem;padding:.12rem .4rem;border-radius:5px;background:${SRC_COLORS[c.src]||SRC_COLORS.Detected};color:${SRC_TEXT[c.src]||SRC_TEXT.Detected};border:1px solid ${SRC_TEXT[c.src]||SRC_TEXT.Detected}33;white-space:nowrap">${c.src} ✓</span>
+    </div>`).join('');
+}
+
+/* ── SKILLS ── */
+function renderSkills() {
+  document.getElementById('skills-have').innerHTML =
+    (aiResult.skills_have||[]).map(s=>`<span class="pill have">${s}</span>`).join('')||'<span class="empty">—</span>';
+  document.getElementById('skills-need').innerHTML = [
+    ...(aiResult.skills_need||[]).map(s=>`<span class="pill need">${s}</span>`),
+    ...(aiResult.skills_to_learn||[]).map(s=>`<span class="pill learn">${s}</span>`)
+  ].join('')||'<span class="empty">Great profile!</span>';
+}
+
+/* ── JOBS ── */
+function renderJobs() {
+  const grid = document.getElementById('job-grid');
+  const jobs = aiResult.job_matches||[];
+  if(!jobs.length){ grid.innerHTML='<p class="empty">No job matches generated.</p>'; return; }
+
+  const EMOJIS=['🏢','💼','🚀','🌐','⚙️','📊','🤖','🧪','💡'];
+  grid.innerHTML = jobs.map((j,i)=>{
+    const mc = j.match_pct>=75?'match-high':j.match_pct>=50?'match-med':'match-low';
+    const skills = (j.required_skills||[]).slice(0,4).map(s=>{
+      const miss = (j.missing_skills||[]).includes(s);
+      return `<span class="job-skill ${miss?'missing':''}">${s}${miss?' ⚠':''}</span>`;
+    }).join('');
+    // Build real apply URLs
+    const liUrl  = jobSearchURL(j.linkedin_keywords||j.title, j.location||'India');
+    const nkUrl  = naukriURL(j.naukri_keywords||j.title);
+    const indUrl = indeedURL(j.title);
+    return `<div class="job-card">
+      <div class="job-top">
+        <div class="company-logo">${j.emoji||EMOJIS[i%9]}</div>
+        <div style="flex:1"><div class="job-title">${j.title}</div><div class="job-company">${j.company} · ${j.location||'India'}</div></div>
+        <span class="job-match ${mc}">${j.match_pct}%</span>
+      </div>
+      <div class="job-skills">${skills}</div>
+      <div style="font-size:.71rem;color:var(--muted)">${j.type||'Full-time'}</div>
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-top:auto;padding-top:.5rem">
+        <a class="apply-btn" href="${liUrl}" target="_blank">LinkedIn ↗</a>
+        <a class="apply-btn" href="${nkUrl}" target="_blank">Naukri ↗</a>
+        <a class="apply-btn" href="${indUrl}" target="_blank">Indeed ↗</a>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── AI ANALYSIS ── */
+function renderAI() {
+  const el = document.getElementById('ai-analysis');
+  el.classList.remove('ai-typing');
+  const parts = [
+    aiResult.career_analysis||'',
+    aiResult.top_companies?.length ? `\n🏢 Top Companies to Target:\n${aiResult.top_companies.map(c=>`  • ${c}`).join('\n')}` : '',
+    aiResult.certifications_recommended?.length ? `\n📜 Recommended Certifications:\n${aiResult.certifications_recommended.map(c=>`  • ${c}`).join('\n')}` : '',
+    aiResult.roadmap?.length ? `\n🗺️ Your 6-Step Roadmap:\n${aiResult.roadmap.map((s,i)=>`  ${i+1}. ${s}`).join('\n')}` : '',
+  ];
+  el.textContent = parts.filter(Boolean).join('\n');
+}
+
+/* ── INIT ── */
+renderPlatformGrid();
+</script>
+</body>
+</html>
